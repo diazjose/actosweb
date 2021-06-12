@@ -1,0 +1,53 @@
+{% include 'base.html.twig' %}
+
+{% block body %}
+    <div class="login-box">
+    <!-- /.login-logo -->
+    <div class="card card-outline card-primary">
+        <div class="card-header text-center">
+        <a href="../../index2.html" class="h1"><b>Actos</b>Web</a>
+        </div>
+        <div class="card-body">
+            <p class="login-box-msg">BienVenidos AL Sistema de Administración de Actos de Escribania</p>
+
+            <form class="form-signin" action="{{ path("fos_user_security_check") }}" method="post">
+
+                {% if error %}
+                <div class="alert alert-danger">
+                    {{ error.messageKey|trans(error.messageData, 'security') }}
+                </div>
+                {% endif %}
+                <div class="input-group mb-3">
+                    <input type="text" id="username" name="_username" class="form-control" placeholder="Usuario" value="{{ last_username }}" required="required">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                        <i class="fas fa-user"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="password" id="inputPassword" class="form-control" placeholder="Contraseña" name="_password" required="required" >
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                        <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- /.col -->
+                <div class="social-auth-links text-center mt-2 mb-3">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <button type="submit" class="btn btn-primary btn-block">Iniciar Sesión</button>
+                </div>
+                </div>
+            </form>
+
+        
+        </div>
+        <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+    </div>
+    <!-- /.login-box -->
+
+{% endblock %}

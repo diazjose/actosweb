@@ -1,0 +1,123 @@
+ {% set current_path = app.request.get('_route') %}
+ <!-- Main Sidebar Container -->
+  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="{{ path('publico_redireccionar') }}" class="brand-link">
+      <img src="{{ asset('actosweb/dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+      <span class="brand-text font-weight-light">ActosWeb</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Sidebar user panel (optional) -->
+      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        
+      </div>
+
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          
+          <!-- Inicio de Personas -->
+          {% set opciones = ["persona_index", "persona_new","persona_edit","persona_show"] %}
+          <li class="nav-item">
+            <a href="{{ path('persona_index') }}" class="nav-link {{ current_path in opciones ? "active" : ""  }}">
+              <i class="nav-icon fas fa-users"></i>
+              <p>Personas</p>
+            </a>            
+          </li>
+          <!-- Fin de Personas -->
+
+          <!-- Inicio de Actos -->
+          {% set opciones = ["acto_index", "acto_new","acto_edit","acto_show"] %}
+          <li class="nav-item">
+            <a href="#" class="nav-link {{ current_path in opciones ? "active" : ""  }}">
+              <i class="nav-icon fas fa-copy"></i>
+              <p>
+                Actos
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ path('actos') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Cargar</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Buscar</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="pages/layout/boxed.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Stock</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <!-- Fin de Actos -->
+          
+          <!-- Inicio de Carpetas -->
+          {% set opciones = ["carpeta_index", "carpeta_new","carpeta_edit","carpeta_show"] %}
+          <li class="nav-item">
+            <a href="#" class="nav-link {{ current_path in opciones ? "active" : ""  }}">
+              <i class="nav-icon fas fa-folder"></i>
+              <p>
+                Carpetas
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="pages/layout/top-nav.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Cargar</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Buscar</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <!-- Fin de Carpetas -->
+
+          <!-- Inicio de Caja -->
+          {% set opciones = ["caja_index", "caja_new","caja_edit","caja_show"] %}
+          <li class="nav-item">
+            <a href="#" class="nav-link {{ current_path in opciones ? "active" : ""  }}">
+              <i class="nav-icon fas fa-cash-register"></i>
+              <p>
+                Caja
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="pages/layout/top-nav.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Registrar</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Consultar</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <!-- Fin de Caja -->
+
+        </ul>
+      </nav>
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+  </aside>

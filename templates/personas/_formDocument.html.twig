@@ -1,0 +1,6 @@
+{% set current_path = app.request.get('_route') %}
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+    <hr>   
+    <button class="btn btn-sm float-right btn-outline-primary">Subír Archivo</button>
+{{ form_end(form) }}
