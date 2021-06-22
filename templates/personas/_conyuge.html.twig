@@ -1,0 +1,24 @@
+<form method="post" action="{{ path('new_Conyuge', {'id': idC, 'idPer':idPer}) }}">
+    <div class="row mx-4 my-4">
+      <div class="col">
+        <h5>¿Agregar Cónyuge a {{nombre}}?</h5>
+      </div>
+    </div>
+
+
+
+    <div class="row">
+      <div class="col">
+        <div class="modal-footer">
+            <button style="margin-left:15px;" class="btn btn-outline-success btn-sm float-right" type="submit" >
+          Si, agregar
+        </button>
+
+        <button type="button" class="btn btn-sm btn-default text-dark float-right" data-dismiss="modal">
+          No, cancelar
+        </button>
+        </div>
+      </div>
+    </div>
+
+</form>

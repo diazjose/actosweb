@@ -1,13 +1,10 @@
 
 
-<form method="post" action="{{ path('persona_delete', {'id': persona}) }}">
-
-    <input type="hidden" name="_method" value="DELETE">
-    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ persona) }}">
+<form method="post" action="{{ path('delete_Conyuge', {'id': persona}) }}">
 
     <div class="row mx-4 my-4">
       <div class="col">
-        <h5>¿Seguro que desea eliminar el registro?</h5>
+        <h5>¿Seguro que desea eliminar <b>Cónyuge</b>?</h5>
       </div>
     </div>
 

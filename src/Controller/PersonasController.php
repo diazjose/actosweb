@@ -21,13 +21,23 @@ class PersonasController extends AbstractController
      */
     public function index(Request $request, PersonaRepository $personaRepository, PaginatorInterface $paginator): Response
     {
+        $viene = $request->get('viene');
+        $idPer = $request->get('idPer');
 
         $em = $this->getDoctrine()->getManager();
         $personas = $em->getRepository(Persona::class)->findAll();        
 
-        return $this->render('personas/index.html.twig', [
-            'personas' => $personas,
-        ]);
+        if($viene){
+            $per = $em->getRepository(Persona::class)->find($idPer);
+            return $this->render('personas/parent.html.twig', [
+                'personas' => $personas,
+                'pers' => $per
+            ]);
+        }else{
+            return $this->render('personas/index.html.twig', [
+                'personas' => $personas,
+            ]);
+        }        
     }
 
     /**
@@ -35,6 +45,7 @@ class PersonasController extends AbstractController
      */
     public function new(Request $request): Response
     {
+        $idPer = $request->get('id');
         $persona = new Persona();
         $form = $this->createForm(PersonaType::class, $persona);
         $form->handleRequest($request);
@@ -47,10 +58,15 @@ class PersonasController extends AbstractController
             $entityManager->persist($persona);
             $entityManager->flush();
 
-            $this->addFlash('success', '¡Registro agregado correctamente!');
-            return $this->redirectToRoute('persona_index');
+            if($idPer){
+                $this->addFlash('success', '¡Registro agregado correctamente!');
+                return $this->redirectToRoute('persona_index', ['viene' => 'persona','idPer' => $idPer]);
+            }else{
+                $this->addFlash('success', '¡Registro agregado correctamente!');
+                return $this->redirectToRoute('persona_index');
+            }
         }
-
+        
         return $this->render('personas/new.html.twig', [
             'persona' => $persona,
             'form' => $form->createView(),
@@ -104,5 +120,49 @@ class PersonasController extends AbstractController
         }
 
         return $this->redirectToRoute('persona_index');
+    }
+
+    /**
+     * @Route("/new_Conyuge", name="new_Conyuge", methods={"GET","POST"})
+     */
+    public function new_Conyuge(Request $request): Response
+    {
+        $em = $this->getDoctrine()->getManager();
+        $persona = $em->getRepository(Persona::class)->find($request->get('idPer'));
+        $parent = $em->getRepository(Persona::class)->find($request->get('id'));
+
+        $persona->setParent($parent);
+        $em->persist($persona);
+        $em->flush();
+
+        $parent->setParent($persona);
+        $em->persist($parent);
+        $em->flush();
+
+        $this->addFlash('success', '¡Se ha Registro Cónyuge correctamente!');
+
+        return $this->redirectToRoute('persona_show', ['id' => $request->get('idPer')]);    
+    }
+
+    /**
+     * @Route("/delete_Conyuge", name="delete_Conyuge", methods={"GET","POST"})
+     */
+    public function delete_Conyuge(Request $request): Response
+    {   
+        $em = $this->getDoctrine()->getManager();
+        $persona = $em->getRepository(Persona::class)->find($request->get('id'));
+        $parent = $em->getRepository(Persona::class)->find($persona->getParent()->getId());
+
+        $parent->setParent(NULL);
+        $em->persist($parent);
+        $em->flush();
+
+        $persona->setParent(NULL);
+        $em->persist($persona);
+        $em->flush();
+
+        $this->addFlash('success', '¡Se ha Eliminado Cónyuge correctamente!');
+
+        return $this->redirectToRoute('persona_show', ['id' => $request->get('id')]);    
     }
 }

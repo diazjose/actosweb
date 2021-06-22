@@ -133,6 +133,18 @@ class Persona
     private $archivos;
     
     /**
+     * @ORM\ManyToOne(targetEntity=Parentesco::class, inversedBy="persona")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $parentesco;
+
+    /** 
+     * @ORM\OneToOne(targetEntity="Persona", inversedBy="parent")
+     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", nullable=true)
+     */
+    private $parent;
+
+    /**
      * @ORM\Column(name="deletedAt", type="datetime", nullable=true)
      */
     private $deletedAt;
@@ -347,6 +359,30 @@ class Persona
                 $archivo->setPersona(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getParentesco(): ?Parentesco
+    {
+        return $this->parentesco;
+    }
+
+    public function setParentesco(?Parentesco $parentesco): self
+    {
+        $this->parentesco = $parentesco;
+
+        return $this;
+    }
+
+    public function getParent(): ?self
+    {
+        return $this->parent;
+    }
+
+    public function setParent(?self $parent): self
+    {
+        $this->parent = $parent;
 
         return $this;
     }
