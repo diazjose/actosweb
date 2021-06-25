@@ -7,9 +7,12 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ORM\Entity(repositoryClass=TipoActoRepository::class)
+ * @ORM\Table("tipo_acto")
+ * @ORM\Entity(repositoryClass="App\Repository\TipoActoRepository")
+ * @UniqueEntity("nombre",message="Este Concepto ya existe.")
  */
 class TipoActo
 {
@@ -23,7 +26,7 @@ class TipoActo
     /**
     * @var string
     *
-    * @ORM\Column(name="nombre", type="string", nullable=false)
+    * @ORM\Column(name="nombre", type="string", nullable=false, unique=true)
     * @Assert\NotBlank(message="Por favor ingrese un Nombre de Acto.") 
     */
     protected $nombre;
@@ -67,7 +70,7 @@ class TipoActo
 
     public function setNombre(string $nombre): self
     {
-        $this->nombre = $nombre;
+        $this->nombre = strtoupper($nombre);
 
         return $this;
     }

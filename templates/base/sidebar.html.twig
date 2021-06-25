@@ -34,7 +34,7 @@
             <a href="#" class="nav-link {{ current_path in opciones ? "active" : ""  }}">
               <i class="nav-icon fas fa-copy"></i>
               <p>
-                Actos
+                Stock
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
@@ -67,7 +67,7 @@
             <a href="#" class="nav-link {{ current_path in opciones ? "active" : ""  }}">
               <i class="nav-icon fas fa-folder"></i>
               <p>
-                Carpetas
+                Actos
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
@@ -114,6 +114,31 @@
             </ul>
           </li>
           <!-- Fin de Caja -->
+
+          <!-- Inicio de Configuracion -->
+          <li class="nav-header">SISTEMA</li>
+              
+              <!-- Inicio de Confgi Caja -->
+              {% set opciones = ["tipo_caja"] %}
+              <li class="nav-item">
+                <a href="{{ path('tipo_caja') }}" class="nav-link {{ current_path in opciones ? "active" : ""  }}">
+                  <i class="nav-icon fas fa-cash-register"></i>
+                  <p>Conceptos de caja</p>
+                </a>
+              </li>
+              <!-- Fin de Confgi Caja -->
+
+               <!-- Inicio de Confgi Caja -->
+              {% set opciones = ["tipo_acto"] %}
+              <li class="nav-item">
+                <a href="{{ path('tipo_acto') }}" class="nav-link {{ current_path in opciones ? "active" : ""  }}">
+                  <i class="nav-icon fas fa-copy"></i>
+                  <p>Tipos de Actos</p>
+                </a>                
+              </li>
+              <!-- Fin de Confgi Caja -->
+
+          <!-- Fin de Configuracion -->
 
         </ul>
       </nav>

@@ -41,6 +41,12 @@ class Caja
      */
     private $concepto;
 
+    /** 
+     * @ORM\OneToOne(targetEntity="Pago", inversedBy="caja", cascade={"remove"})
+     * @ORM\JoinColumn(name="pago_id", referencedColumnName="id", nullable=true)
+     */
+    private $pago;
+
     /**
       * @var \DateTime
       *

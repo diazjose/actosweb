@@ -42,6 +42,12 @@ class Pago
     private $acto;
 
     /**
+     * @ORM\OneToOne(targetEntity="Caja", mappedBy="pago", cascade={"remove"})
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $caja;
+
+    /**
       * @var \DateTime
       *
       * @ORM\Column(name="createdAt", type="datetime")
