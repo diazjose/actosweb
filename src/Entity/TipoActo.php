@@ -36,6 +36,12 @@ class TipoActo
      */
     private $actos;
 
+    /** 
+     * @ORM\OneToOne(targetEntity="Hoja", inversedBy="tipoActo")
+     * @ORM\JoinColumn(name="hoja_id", referencedColumnName="id", nullable=true)
+     */
+    private $hoja;
+
     /**
       * @var \DateTime
       *
@@ -125,6 +131,18 @@ class TipoActo
                 $acto->setTipoActo(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getHoja(): ?Hoja
+    {
+        return $this->hoja;
+    }
+
+    public function setHoja(?Hoja $hoja): self
+    {
+        $this->hoja = $hoja;
 
         return $this;
     }

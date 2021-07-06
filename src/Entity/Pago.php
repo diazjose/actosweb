@@ -128,4 +128,16 @@ class Pago
 
         return $this;
     }
+
+    public function getCaja(): ?Caja
+    {
+        return $this->caja;
+    }
+
+    public function setCaja(?Caja $caja): self
+    {
+        $this->caja = $caja;
+
+        return $this;
+    }
 }

@@ -7,11 +7,13 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Table("Persona")
  * @ORM\Entity(repositoryClass="App\Repository\PersonaRepository")
  * @Gedmo\Loggable
+ * @UniqueEntity("dni",message="Este DNI ya existe.")
  */
 class Persona
 {
@@ -56,7 +58,7 @@ class Persona
 
     /**
      * @var string $dni
-     * @ORM\Column(name="dni", type="integer", nullable=true, length=12)
+     * @ORM\Column(name="dni", type="integer", nullable=true, length=12, unique=true)
      * @Gedmo\Versioned
      * @Assert\NotBlank(message="Por favor ingrese su apellido.", groups={"Registration", "Profile"})
      * @Assert\Length(

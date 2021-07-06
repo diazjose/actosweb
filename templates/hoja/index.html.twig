@@ -1,0 +1,117 @@
+{% extends 'base.html.twig' %}
+{% block title %}Stock de Hojas - {{ parent() }}{% endblock %}
+{% block stylesheets %}
+    <!-- DataTables -->
+  <link rel="stylesheet" href="{{ asset('actosweb/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('actosweb/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('actosweb/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+{% endblock %}
+{% block body %}
+  
+      <br><br>
+      
+      <section class="content">
+        <div class="container-fluid">
+
+        <div class="row align-items-center mb-3 mb-xl-5">
+          <div class="col-md mb-2 mb-md-0">
+            <h1 class="h3 mb-0">Stock de Hojas</h1>
+          </div>
+          <div class="col-md ml-md-auto text-md-right">
+            <a class="btn bg-gradient-primary btn-sm {% if new == 'si' %} disabled {% endif %} " href="{{ path('hoja_new') }}">
+              <i class="fas fa-plus"></i> &nbsp; Agregar Hoja
+            </a>
+          </div>
+        </div>
+
+        {{ include('base/_flash.html.twig') }}
+
+          <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">Listado de Hojas</h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                  <table id="example1" class="table table-bordered table-hover">
+                    <thead>
+                      <tr>
+                          <th>#</th>
+                          <th>Tipo de Hoja</th>
+                          <th>Stock</th>
+                          <th>Estado</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% set i = 1 %}
+                      {% for h in hojas %}
+                      <tr>
+                          <td onClick="window.location='{{ path('hoja_show', {'id': h.id}) }}'">{{i}}</td>
+                          <td onClick="window.location='{{ path('hoja_show', {'id': h.id}) }}'">{{h.tipoActo.nombre}}</td>
+                          <td onClick="window.location='{{ path('hoja_show', {'id': h.id}) }}'">{{h.cantidad}}</td>
+                          <td onClick="window.location='{{ path('hoja_show', {'id': h.id}) }}'">
+                            {% set c = h.cantidad - h.alarma %}
+                            {% if h.cantidad <= h.alarma %}
+                            <span class="badge badge-pill badge-danger md-2 mr-2">Reponer</span>
+                            {% else %}
+                            <span class="badge badge-pill badge-success md-2 mr-2">Alarma</span>
+                            {% endif %}
+                          </td>
+                      </tr>
+                      {% set i = i + 1 %}
+                      {% endfor %}
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                          <th>#</th>
+                          <th>Tipo de Hoja</th>
+                          <th>Stock</th>
+                          <th>Estado</th>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+                <!-- /.card-body -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>        
+
+    {% block javascripts %}
+    <!-- DataTables  & Plugins -->
+    <script src="{{ asset('actosweb/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('actosweb/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('actosweb/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('actosweb/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('actosweb/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('actosweb/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('actosweb/plugins/jszip/jszip.min.js') }}"></script>
+    <script src="{{ asset('actosweb/plugins/pdfmake/pdfmake.min.js') }}"></script>
+    <script src="{{ asset('actosweb/plugins/pdfmake/vfs_fonts.js') }}"></script>
+    <script src="{{ asset('actosweb/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
+    <script src="{{ asset('actosweb/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
+    <script src="{{ asset('actosweb/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
+    <script src="{{ asset('actosweb/variables.js') }}"></script>
+
+    <script>
+        $(function () {
+            $("#example1").DataTable({
+            "responsive": true, "lengthChange": false, "autoWidth": false, "language": spanish,
+            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
+            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+            $('#example2').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "searching": false,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+            });
+        });
+         
+    </script>
+    {% endblock %}        
+{% endblock %}

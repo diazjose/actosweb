@@ -1,0 +1,22 @@
+{% set current_path = app.request.get('_route') %}
+{{ form_start(form) }}
+
+    <div class="row">
+        <div class="col-md-6">
+            {{ form_row(form.cantidad) }}      
+        </div>
+    </div>   
+    <div class="row">
+        <div class="col-md-6">
+            {{ form_row(form.fecha) }}    
+        </div>
+    </div>
+
+    <hr>
+    {% if current_path == 'reposicionHoja_new' %}
+    <button class="btn btn-sm float-right btn-outline-primary">Guardar cambios</button>
+    {% else %}
+    <input type="hidden" name="cant" value="{{cant}}">
+    <button class="btn btn-sm float-right btn-outline-success">Guardar cambios</button>
+    {% endif %}
+{{ form_end(form) }}

@@ -2,16 +2,18 @@
 
 namespace App\Entity;
 
+use App\Repository\ReposicionHojaRepository;
+use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ORM\Entity(repositoryClass=CajaRepository::class)
+ * @ORM\Entity(repositoryClass=ReposicionHojaRepository::class)
  */
-class Caja
+class ReposicionHoja
 {
     /**
      * @ORM\Id
@@ -21,32 +23,32 @@ class Caja
     private $id;
 
     /**
-    * @var string
-    *
-    * @ORM\Column(name="fecha", type="date", nullable=false)
+     * @var string $cantidad
+     * @ORM\Column(name="cantidad", type="integer", nullable=true, length=12)
+     * @Assert\Length(
+     *      min = 0,
+     *      max = 100,
+     *      minMessage = "La Cantidad demasiado pequeña, no es valido.",
+     *      maxMessage = "La Cantidad es demasiado grande, no es valido"
+     * )
+     * @Assert\NotBlank(message="Por favor ingrese Cantidad.")
     */
+    protected $cantidad;
+
+     /**
+     * @var string $fecha
+     * @ORM\Column(name="fecha", type="date", nullable=false)
+     * @Assert\NotBlank(message="Por favor ingrese Fecha.")
+     */
+    
     protected $fecha;
 
     /**
-    * @var string
-    *
-    * @ORM\Column(name="monto", type="string", nullable=false)
-    * @Assert\NotBlank(message="Por favor ingrese Monto.") 
-    */
-    protected $monto;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=TipoCaja::class, inversedBy="cajas")
+     * @ORM\ManyToOne(targetEntity=Hoja::class, inversedBy="reposiciones")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $concepto;
-
-    /** 
-     * @ORM\OneToOne(targetEntity="Pago", inversedBy="caja", cascade={"remove"})
-     * @ORM\JoinColumn(name="pago_id", referencedColumnName="id", nullable=true)
-     */
-    private $pago;
-
+    private $hoja;
+    
     /**
       * @var \DateTime
       *
@@ -69,6 +71,18 @@ class Caja
         return $this->id;
     }
 
+    public function getCantidad(): ?int
+    {
+        return $this->cantidad;
+    }
+
+    public function setCantidad(?int $cantidad): self
+    {
+        $this->cantidad = $cantidad;
+
+        return $this;
+    }
+
     public function getFecha(): ?\DateTimeInterface
     {
         return $this->fecha;
@@ -81,14 +95,14 @@ class Caja
         return $this;
     }
 
-    public function getMonto(): ?string
+    public function getDeletedAt(): ?\DateTimeInterface
     {
-        return $this->monto;
+        return $this->deletedAt;
     }
 
-    public function setMonto(string $monto): self
+    public function setDeletedAt(?\DateTimeInterface $deletedAt): self
     {
-        $this->monto = $monto;
+        $this->deletedAt = $deletedAt;
 
         return $this;
     }
@@ -117,26 +131,14 @@ class Caja
         return $this;
     }
 
-    public function getConcepto(): ?TipoCaja
+    public function getHoja(): ?Hoja
     {
-        return $this->concepto;
+        return $this->hoja;
     }
 
-    public function setConcepto(?TipoCaja $concepto): self
+    public function setHoja(?Hoja $hoja): self
     {
-        $this->concepto = $concepto;
-
-        return $this;
-    }
-
-    public function getPago(): ?Pago
-    {
-        return $this->pago;
-    }
-
-    public function setPago(?Pago $pago): self
-    {
-        $this->pago = $pago;
+        $this->hoja = $hoja;
 
         return $this;
     }

@@ -29,35 +29,13 @@
           <!-- Fin de Personas -->
 
           <!-- Inicio de Actos -->
-          {% set opciones = ["acto_index", "acto_new","acto_edit","acto_show"] %}
+          {% set opciones = ["hoja_index"] %}
           <li class="nav-item">
-            <a href="#" class="nav-link {{ current_path in opciones ? "active" : ""  }}">
+            <a href="{{ path('hoja_index') }}" class="nav-link {{ current_path in opciones ? "active" : ""  }}">
               <i class="nav-icon fas fa-copy"></i>
-              <p>
-                Stock
-                <i class="fas fa-angle-left right"></i>
-              </p>
+              <p>Stock</p>
             </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="{{ path('actos') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Cargar</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Buscar</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/layout/boxed.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Stock</p>
-                </a>
-              </li>
-            </ul>
+            
           </li>
           <!-- Fin de Actos -->
           
