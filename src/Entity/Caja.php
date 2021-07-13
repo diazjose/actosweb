@@ -9,7 +9,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass=CajaRepository::class)
+ * @ORM\Entity(repositoryClass=App\Repository\CajaRepository::class)
  */
 class Caja
 {
@@ -36,16 +36,23 @@ class Caja
     protected $monto;
 
     /**
+    * @var string
+    *
+    * @ORM\Column(name="detalle", type="string", nullable=true)
+    */
+    protected $detalle;
+
+    /**
      * @ORM\ManyToOne(targetEntity=TipoCaja::class, inversedBy="cajas")
      * @ORM\JoinColumn(nullable=false)
      */
     private $concepto;
 
     /** 
-     * @ORM\OneToOne(targetEntity="Pago", inversedBy="caja", cascade={"remove"})
-     * @ORM\JoinColumn(name="pago_id", referencedColumnName="id", nullable=true)
+     * @ORM\ManyToOne(targetEntity="Acto", inversedBy="pagos")
+     * @ORM\JoinColumn(nullable=true)
      */
-    private $pago;
+    private $acto;
 
     /**
       * @var \DateTime
@@ -137,6 +144,30 @@ class Caja
     public function setPago(?Pago $pago): self
     {
         $this->pago = $pago;
+
+        return $this;
+    }
+
+    public function getDetalle(): ?string
+    {
+        return $this->detalle;
+    }
+
+    public function setDetalle(string $detalle): self
+    {
+        $this->detalle = $detalle;
+
+        return $this;
+    }
+
+    public function getActo(): ?Acto
+    {
+        return $this->acto;
+    }
+
+    public function setActo(?Acto $acto): self
+    {
+        $this->acto = $acto;
 
         return $this;
     }

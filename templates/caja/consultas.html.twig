@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-{% block title %}Caja - {{ parent() }}{% endblock %}
+{% block title %}Consultas de Caja - {{ parent() }}{% endblock %}
 {% block stylesheets %}
     <!-- DataTables -->
   <link rel="stylesheet" href="{{ asset('actosweb/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
@@ -15,7 +15,10 @@
 
         <div class="row align-items-center mb-3 mb-xl-5">
           <div class="col-md mb-2 mb-md-0">
-            <h1 class="h3 mb-0"><b>Caja</b></h1>
+            <h1 class="h3 mb-0"><b>Consultas de Caja</b></h1><br>
+            <div class="alert alert-warning" role="alert">
+              <h1 class="h5 mb-0"> {% if concepto != '' %} <b>{{concepto.nombre}}</b> {% else %} Todos los <b>Conceptos</b> {% endif %}Desde <b>{{ inicio ? inicio|date('d/m/Y') : '"siempre"' }}</b> Hasta <b>{{ fin ? fin|date('d/m/Y') : "now"|date("d/m/Y") }}</b></h1>
+            </div>
           </div>
         </div>
 
@@ -25,15 +28,16 @@
             <div class="col-4">
                 <div class="card">
                     <div class="card-header">
-                    <h3 class="card-title"><i class="fas fa-plus"></i> &nbsp;<b>Agregar Movimiento</b></h3>
+                    <h3 class="card-title"><i class="fas fa-search"></i> &nbsp;<b>Buscar Movimientos</b></h3>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                      {{ include('caja/_form.html.twig') }}
+                      {{ include('caja/_consultar_form.html.twig') }}
                     </div>
                 </div>
             </div> 
             <div class="col-8">
+               
               <div class="card">
                 <div class="card-header">
                   <h3 class="card-title"><i class="fas fa-list"></i> &nbsp;<b>Listado de Movimientos</b></h3>

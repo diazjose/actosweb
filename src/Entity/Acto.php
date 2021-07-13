@@ -47,7 +47,7 @@ class Acto
     private $presupuestos;
 
     /**
-     * @ORM\OneToMany(targetEntity=Pago::class, mappedBy="acto")
+     * @ORM\OneToMany(targetEntity=Caja::class, mappedBy="acto")
      */
     private $pagos;
 

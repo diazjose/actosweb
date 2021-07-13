@@ -36,6 +36,35 @@ class CajaRepository extends ServiceEntityRepository
     }
     */
 
+    public function findForActionIndex($filtro = [])
+    {
+      $qb = $this->createQueryBuilder('e');    
+      
+      // Este es un ejemplo de como se aplica un filtro.
+      // El indice del array de $filtro hace referencia al valor que se aplicará
+      // en este filtro si es que esta definido en el array y si no viene vacíozzzzzz
+      if(isset($filtro["fechaIni"]) && $filtro["fechaIni"] != '') {
+        $qb
+          ->andWhere("e.fecha >= :fechaIni")
+          ->setParameter("fechaIni", $filtro["fechaIni"])
+        ;
+      }
+      if(isset($filtro["fechaFin"]) && $filtro["fechaFin"] != '') {
+        $qb
+          ->andWhere("e.fecha <= :fechaFin")
+          ->setParameter("fechaFin", $filtro["fechaFin"])
+        ;
+      }
+
+      if(isset($filtro["concepto"]) && $filtro["concepto"] != '') {
+        $qb
+          ->innerJoin('e.concepto', 'c')
+          ->andWhere("c.id = :concepto")
+          ->setParameter("concepto", $filtro["concepto"])
+        ;
+      }
+      return $qb->orderBy('e.fecha', 'DESC')->getQuery()->getResult();
+    }
     /*
     public function findOneBySomeField($value): ?Caja
     {
@@ -47,4 +76,13 @@ class CajaRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function todos()
+    {
+        return $this->createQueryBuilder('c')
+            ->orderBy('c.id', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+        //return $this->findBy(array(), array('fecha' => 'DESC'));
+    }
 }

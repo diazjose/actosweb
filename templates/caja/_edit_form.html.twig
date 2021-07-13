@@ -1,0 +1,29 @@
+<form method="post" action="{{ path('caja_edit', {'id': mov.id}) }}">
+
+    <input type="hidden" name="_token" value="{{ csrf_token('edit' ~ mov.id) }}">
+
+    <div class="form-group">
+        <label for="nombre">Monto</label>
+        <input type="text" class="form-control" name="monto" id="monto" value="{{mov.monto}}">
+    </div>
+
+    <div class="form-group">
+        <label for="concepto">Concepto</label>
+         <select id="concepto{{mov.id}}" class="form-control" name="concepto">
+            {% for con in conceptos %}
+            <option value="{{con.id}}" >{{con.nombre}}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="detalle">Detalle</label>
+        <textarea class="form-control rounded-0" id="detalle" name="detalle"rows="3">{{mov.detalle}}</textarea>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-sm float-right btn-outline-success mx-2">Guardar Cambio</button>
+        <button type="button" class="btn btn-sm float-right btn-outline-secondary" data-dismiss="modal">Cerrar</button>
+    </div>
+
+</form>
