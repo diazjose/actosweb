@@ -1,0 +1,181 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Acto - {{ parent() }}{% endblock %}
+
+{% block body %}
+    <br><br>
+    <section class="content mx-2">
+        <div class="container-fluid">
+            <div class="row align-items-center mb-3 mb-xl-5">
+                <div class="col-md mb-2 mb-md-0">
+                    <h1 class="h3 mb-0"><b>Acto</b></h1>
+                </div>
+                <div class="col-md ml-md-auto text-md-right">
+
+                    {% set r = acto.roles|length %}
+                    {% set m = acto.movimientos|length %}
+                    {% set pr = acto.presupuestos|length %}
+                    {% set p = acto.pagos|length %}
+                    {% if r == 0 and m == 0 and pr == 0 and p == 0 %}
+                    <button class="btn btn-sm btn-outline-danger float-right" type="button" data-toggle="modal" data-target="#modalContent">
+                    <i class="fas fa-trash-alt"></i> &nbsp; <span>Eliminar</span>
+                    </button>
+                    {% endif %}
+
+                    <a class="btn btn-sm btn-outline-success float-right" style="margin-right:15px;" href="{{ path('acto_edit', {'id': acto.id, 'tipo':acto.tipoActo.id}) }}">
+                    <i class="fas fa-edit"></i>
+                    Editar
+                    </a>
+
+                    <a class="btn btn-sm btn-outline-secondary float-right" style="margin-right:15px;" href="{{ path('acto_index') }}">
+                        <i class="fas fa-arrow-left"></i> &nbsp; Volver al listado
+                    </a>
+
+                </div>
+            </div>
+
+            {{ include('base/_flash.html.twig') }}
+
+            <div class="card">
+                <div class="card-body">
+
+                    <table class="table">
+
+                        <tbody>
+                            <!-- Inicio Datos del Acto -->
+                            <tr style="background: #80808012;">
+                                <th colspan="6" class="text-center align-middle">Datos del Acto</th>
+                            </tr>
+                            <tr>
+                                <th width="10%" class="text-right">N° de Hoja:</th>
+                                <td width="20%" class="align-middle">{{ acto.numeroHoja }}</td>
+                                <th width="10%" class="text-right">Tipo:</th>
+                                <td width="20%" class="align-middle">{{ acto.tipoActo.nombre }}</td>
+                                <th width="10%" class="text-right">Fecha Inicio:</th>
+                                <td width="20%" class="align-middle">{{ acto.fechaInicio|date('d/m/Y') }}</td>
+                            </tr>
+                            <tr>
+                                <th width="10%" class="text-right">Folio:</th>
+                                <td width="20%" class="align-middle">{{ acto.folio }}</td>
+                                <th width="10%" class="text-right">N° Libro:</th>
+                                <td width="20%" class="align-middle">{{ acto.numeroLibro }}</td>
+                                <th width="10%" class="text-right">N° Acta:</th>
+                                <td width="20%" class="align-middle">{{ acto.numeroActa }}</td>
+                            </tr>
+                            
+                            <!-- fin Datos del Acto -->
+
+                            <!-- Inicio Datos de Requirento/a favor -->
+                            <tr style="background: #80808012;">
+                                <th colspan="6" class="text-center align-middle">
+                                  {% if acto.tipoActo.nombre == 'CERTIFICACION' %}
+                                  Datos de Requirente
+                                  {% else %}
+                                  Propietario/s
+                                  {% endif %}
+                                </th>
+                            </tr>
+                              <th colspan="6" class="align-middle">
+                                  {% if acto.tipoActo.nombre == 'CERTIFICACION' %}
+                                    <a class="btn btn-sm btn-outline-info float-left" type="button" href="{{ path('personas_list',{'id': acto.id, 'rol':'Requirente'}) }}">
+                                    <i class="fas fa-plus"></i> &nbsp; 
+                                      <span>Agregar Requirente</span>
+                                    </a>
+                                  {% else %}
+                                    <a class="btn btn-sm btn-outline-info float-left" type="button" href="{{ path('personas_list',{'id': acto.id, 'rol':'Propietario'}) }}">
+                                    <i class="fas fa-plus"></i> &nbsp; 
+                                      <span>Agregar Propietario</span>
+                                    </a>
+                                  {% endif %}  
+                              </th>
+                              {% for p in acto.getRoles %}
+                                {% if p.nombre == 'REQUIRENTE' or p.nombre == 'PROPIETARIO' %}
+                                <tr>
+                                  <th class="text-right">
+                                    <a class="m-0 p-1 btn btn-sm" style="color:red;" title="Eliminar registro" href="javascript:void(0)" data-toggle="modal" data-target="#delTipoRol{{ p.id }}">
+                                      <i class="fas fa-trash-alt"></i>
+                                    </a>
+                                  </th>
+                                  <td colspan="5" class="align-middle"> 
+                                    <b>Nombre: </b> {{p.persona.apellidos}}, {{p.persona.nombre}} &nbsp; &nbsp;&nbsp; &nbsp; 
+                                    <b>N° DNI: </b> {{ p.persona.dni ? p.persona.dni|number_format(0, ',', '.' ) : ' - ' }} &nbsp; &nbsp;&nbsp; &nbsp;
+                                    <b>N° CUIL: </b> {{p.persona.cuil}} &nbsp; &nbsp;&nbsp; &nbsp;
+                                    <b>Teléfono: </b> {{p.persona.telephone}} &nbsp; &nbsp;<br>
+                                    <b>Dirección: </b> {{p.persona.domicilio}} &nbsp; &nbsp;&nbsp; &nbsp;
+                                    <b>Estado Civil: </b> {{p.persona.estadoCivil}} &nbsp; &nbsp;&nbsp; &nbsp;
+                                    <b>Cónyuge: </b> {{ p.persona.parent ? p.persona.parent.apellidos ~ ', ' ~ p.persona.parent.nombre : 'No Tiene'}} &nbsp; &nbsp;
+                                  </td>
+                                </tr>  
+
+                                {% endif %}
+                              {% endfor %}
+
+                            <!-- Fin Datos de Requirento/a favor -->
+                            
+                            <!-- Si el tipo de acto no es CERTIFICACION  -->
+                            <!-- Inicio Datos de Nuevo Dueño -->
+                            {% if acto.tipoActo.nombre != 'CERTIFICACION' %}
+                              <tr style="background: #80808012;">
+                                  <th colspan="6" class="text-center align-middle">
+                                    Nuevo/s Propietario/s
+                                  </th>
+                              </tr>
+                                <th colspan="6" class="align-middle">
+                                    <a class="btn btn-sm btn-outline-info float-left" type="button" href="{{ path('personas_list',{'id': acto.id, 'rol':'Nuevo Propietario'}) }}">
+                                      <i class="fas fa-plus"></i> &nbsp; 
+                                        <span>Nuevo Propietario</span>
+                                    </a>
+                                </th>
+                                {% for p in acto.getRoles %}
+                                  {% if p.nombre == 'NUEVO PROPIETARIO' %}
+                                  <tr>
+                                    <th class="text-right">
+                                      <a class="m-0 p-1 btn btn-sm" style="color:red;" title="Eliminar registro" href="javascript:void(0)" data-toggle="modal" data-target="#delTipoRol{{ p.id }}">
+                                        <i class="fas fa-trash-alt"></i>
+                                      </a>
+                                    </th>
+                                    <td colspan="5" class="align-middle"> 
+                                      <b>Nombre: </b> {{p.persona.apellidos}}, {{p.persona.nombre}} &nbsp; &nbsp;&nbsp; &nbsp; 
+                                      <b>N° DNI: </b> {{ p.persona.dni ? p.persona.dni|number_format(0, ',', '.' ) : ' - ' }} &nbsp; &nbsp;&nbsp; &nbsp;
+                                      <b>N° CUIL: </b> {{p.persona.cuil}} &nbsp; &nbsp;&nbsp; &nbsp;
+                                      <b>Teléfono: </b> {{p.persona.telephone}} &nbsp; &nbsp;<br>
+                                      <b>Dirección: </b> {{p.persona.domicilio}} &nbsp; &nbsp;&nbsp; &nbsp;
+                                      <b>Estado Civil: </b> {{p.persona.estadoCivil}} &nbsp; &nbsp;&nbsp; &nbsp;
+                                      <b>Cónyuge: </b> {{ p.persona.parent ? p.persona.parent.apellidos ~ ', ' ~ p.persona.parent.nombre : 'No Tiene'}} &nbsp; &nbsp;
+                                    </td>
+                                  </tr>  
+
+                                  {% endif %}
+                                {% endfor %}
+                            {% endif %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+            </div>
+        </div><br>
+
+    </section>        
+    
+{% endblock %}
+
+{% block modal_content %}
+  <div id="modalContent" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        {{ include('actos/_delete_form.html.twig', {"acto" : acto.id, 'tipo':acto.tipoActo.id }) }}
+      </div>
+    </div>
+  </div>
+  {% for p in acto.getRoles %}
+  <div id="delTipoRol{{p.id}}" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        {{ include('actos/_delete_rol.html.twig', {"rol" : p.id, 'nombre':p.nombre }) }}
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+{% endblock modal_content %}

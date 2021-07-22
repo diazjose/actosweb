@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Entity\Actos;
+use App\Entity\Acto;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -16,7 +16,7 @@ class ActosRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Actos::class);
+        parent::__construct($registry, Acto::class);
     }
 
     // /**

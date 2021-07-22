@@ -17,11 +17,21 @@ class PersonaType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nombre')
-            ->add('apellidos')
-            ->add('dni')
+            ->add('apellidos', null, [
+                'label' => 'Apellidos',
+                'required' => True,
+            ])
+            ->add('nombre', null, [
+                'label' => 'Nombre',
+                'required' => True,
+            ])
+            ->add('dni', null, [
+                'label' => 'N° Documento',
+                'required' => false,
+            ])
             ->add('cuil',null, [
-                "label" => "Cuil"
+                "label" => "Cuil",
+                'required' => false,
               ])
             ->add('fechaNac', Type\DateType::class, [
                 'label' => 'Fecha de Nacimiento',
@@ -30,15 +40,17 @@ class PersonaType extends AbstractType
                     'day' => 'Día', 'month' => 'Mes', 'year' => 'Año',
                 ],                
                 'format' => 'dd-MM-yyyy',
-                'required' => True,
+                'required' => false,
                 'years' => range(1930,2030), 
                 'label_attr' => array('style' => 'font-weight: bold;margin-top: 0px !important;margin-bottom: 0px !important;')        
             ])
             ->add('domicilio',null, [
-                "label" => "Domicilio"
+                "label" => "Domicilio",
+                'required' => false,
               ])
             ->add('nacionalidad',null, [
-                "label" => "Nacionalidad"
+                "label" => "Nacionalidad",
+                'required' => false,
               ])
             ->add('estadoCivil', ChoiceType::class, [
                 'choices'  => [
@@ -49,10 +61,12 @@ class PersonaType extends AbstractType
                 "label" => "Estado Civil",
             ])
             ->add('email',null, [
-                "label" => "Correo Electrónico"
+                "label" => "Correo Electrónico",
+                'required' => false,
               ])
             ->add('telephone',null, [
-                "label" => "Teléfono"
+                "label" => "Teléfono",
+                'required' => false,
               ])
         ;
     }

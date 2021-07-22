@@ -40,29 +40,12 @@
           <!-- Fin de Actos -->
           
           <!-- Inicio de Carpetas -->
-          {% set opciones = ["carpeta_index", "carpeta_new","carpeta_edit","carpeta_show"] %}
+          {% set opciones = ["acto_index", "acto_new","acto_edit","acto_show"] %}
           <li class="nav-item">
-            <a href="#" class="nav-link {{ current_path in opciones ? "active" : ""  }}">
+            <a href="{{ path('acto_index') }}" class="nav-link {{ current_path in opciones ? "active" : ""  }}">
               <i class="nav-icon fas fa-folder"></i>
-              <p>
-                Actos
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="pages/layout/top-nav.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Cargar</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Buscar</p>
-                </a>
-              </li>
-            </ul>
+              <p>Actos</p>
+            </a>            
           </li>
           <!-- Fin de Carpetas -->
 
@@ -106,7 +89,7 @@
               </li>
               <!-- Fin de Confgi Caja -->
 
-               <!-- Inicio de Confgi Caja -->
+              <!-- Inicio de Confgi Caja -->
               {% set opciones = ["tipo_acto"] %}
               <li class="nav-item">
                 <a href="{{ path('tipo_acto') }}" class="nav-link {{ current_path in opciones ? "active" : ""  }}">
@@ -115,6 +98,16 @@
                 </a>                
               </li>
               <!-- Fin de Confgi Caja -->
+
+              <!-- Inicio de Confgi Estados de Actos -->
+              {% set opciones = ["estado_acto"] %}
+              <li class="nav-item">
+                <a href="{{ path('estado_acto') }}" class="nav-link {{ current_path in opciones ? "active" : ""  }}">
+                  <i class="nav-icon fas fa-copy"></i>
+                  <p>Estados de Actos</p>
+                </a>                
+              </li>
+              <!-- Fin de Confgi Estados de Actos -->
 
           <!-- Fin de Configuracion -->
 

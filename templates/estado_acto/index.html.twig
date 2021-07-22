@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-{% block title %}Actos - {{ parent() }}{% endblock %}
+{% block title %}Tipos de Actos - {{ parent() }}{% endblock %}
 {% block stylesheets %}
     <!-- DataTables -->
   <link rel="stylesheet" href="{{ asset('actosweb/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
@@ -15,64 +15,90 @@
 
         <div class="row align-items-center mb-3 mb-xl-5">
           <div class="col-md mb-2 mb-md-0">
-            <h1 class="h3 mb-0"><b>Actos</b></h1>
-          </div>
-          <div class="col-md ml-md-auto text-md-right">
-            <a class="btn bg-gradient-primary btn-sm" href="{{ path('acto_new') }}">
-              <i class="fas fa-plus"></i> &nbsp; Agregar Acto
-            </a>
+            <h1 class="h3 mb-0"><b>Estados de Actos</b></h1>
           </div>
         </div>
 
         {{ include('base/_flash.html.twig') }}
 
           <div class="row">
-            <div class="col-12">
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">
+                    <h3 class="card-title"><i class="fas fa-plus"></i> &nbsp;<b>Agregar Estado</b></h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                      {{ include('estado_acto/_form.html.twig') }}
+                    </div>
+                </div>
+            </div> 
+            <div class="col-8">
               <div class="card">
                 <div class="card-header">
-                  <h3 class="card-title"><b>Listado de Actos</b></h3>
+                  <h3 class="card-title"><i class="fas fa-list"></i> &nbsp;<b>Listado de Estados</b></h3>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
                   <table id="example1" class="table table-bordered table-hover">
                     <thead>
                       <tr>
-                          <th>N° Hoja</th>
-                          <th>Tipo</th>
-                          <th>Favor/Requirente</th>
-                          <th>Fecha Inicio</th>
-                          <th>Estado</th>
+                          <th>#</th>
+                          <th>Nombre</th>
+                          <th></th>
                       </tr>
                     </thead>
                     <tbody>
-                      {% for ac in actos %}
+                      {% set i = 1 %}
+                      {% for t in tipos %}
                       <tr>
-                          <td onClick="window.location='{{ path('acto_show', {'id': ac.getId}) }}'">{{ac.numeroHoja}}</td>
-                          <td onClick="window.location='{{ path('acto_show', {'id': ac.getId}) }}'">{{ac.tipoActo.nombre}}</td>
-                          <td onClick="window.location='{{ path('acto_show', {'id': ac.getId}) }}'"></td>
-                          <td onClick="window.location='{{ path('acto_show', {'id': ac.getId}) }}'">{{ac.fechaInicio|date('d/m/Y')}}</td>
-                          <td onClick="window.location='{{ path('acto_show', {'id': ac.getId}) }}'"></td>
-                          
+                          <td>{{i}}</td>
+                          <td>{{t.nombre}}</td>
+                          <td width="80" class="text-right">
+                            <a class="m-0 p-1 btn btn-sm" title="Editar registro" href="javascript:void(0)" data-toggle="modal" data-target="#modalContent{{ t.id }}">
+                              <i class="fas fa-edit"></i>
+                            </a>
+                          </td>
                       </tr>
+                      {% set i = i + 1 %}
                       {% endfor %}
                     </tbody>
                     <tfoot>
                       <tr>
-                          <th>N° Hoja</th>
-                          <th>Tipo</th>
-                          <th>Favor/Requirente</th>
-                          <th>Fecha Inicio</th>
-                          <th>Estado</th>
+                          <th>#</th>
+                          <th>Nombre</th>
+                          <th></th>
                       </tr>
                     </tfoot>
                   </table>
                 </div>
                 <!-- /.card-body -->
               </div>
-            </div>
+            </div>             
           </div>
         </div>
       </div>        
+
+{% block modal_content %}
+  {% for t in tipos %}
+  <div id="modalContent{{ t.id }}" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">      
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="fas fa-edit"></i> <b>Actualizar Estado</b></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          {{ include('estado_acto/_edit_form.html.twig', {"tipo" : t }) }}
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+{% endblock modal_content %}
+
 
     {% block javascripts %}
     <!-- DataTables  & Plugins -->
@@ -94,7 +120,6 @@
         $(function () {
             $("#example1").DataTable({
             "responsive": true, "lengthChange": false, "autoWidth": false, "language": spanish,
-            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
             $('#example2').DataTable({
             "paging": true,
@@ -106,7 +131,8 @@
             "responsive": true,
             });
         });
-         
+        
+        $("#estado_acto_nombre" ).val(""); 
     </script>
     {% endblock %}        
 {% endblock %}

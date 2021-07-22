@@ -7,9 +7,11 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ORM\Entity(repositoryClass=ActosRepository::class)
+ * @ORM\Entity(repositoryClass="App\Repository\ActosRepository")
+ * @UniqueEntity("numeroHoja",message="Esta Hoja ya existe.")
  */
 class Acto
 {
@@ -30,14 +32,19 @@ class Acto
     /**
     * @var string
     *
-    * @ORM\Column(name="fechaFin", type="date", nullable=false)
+    * @ORM\Column(name="fechaFin", type="date", nullable=true)
     */
     protected $fechaFin;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\TipoRol", mappedBy="acto", cascade={"remove"})
+     */
+    private $roles;
+
+    /**
     * @var string
     *
-    * @ORM\Column(name="saldo", type="string", nullable=false) 
+    * @ORM\Column(name="saldo", type="string", nullable=true) 
     */
     protected $saldo;
 
@@ -54,9 +61,30 @@ class Acto
     /**
     * @var string
     *
-    * @ORM\Column(name="numeroHoja", type="string", nullable=false) 
+    * @ORM\Column(name="numeroHoja", type="string", nullable=false, unique=true) 
     */
     protected $numeroHoja;
+
+     /**
+    * @var string
+    *
+    * @ORM\Column(name="folio", type="string", nullable=true) 
+    */
+    protected $folio;
+
+     /**
+    * @var string
+    *
+    * @ORM\Column(name="numeroLibro", type="string", nullable=true) 
+    */
+    protected $numeroLibro;
+
+     /**
+    * @var string
+    *
+    * @ORM\Column(name="numeroActa", type="string", nullable=true) 
+    */
+    protected $numeroActa;
 
     /**
      * @ORM\ManyToOne(targetEntity=TipoActo::class, inversedBy="actos")
@@ -91,6 +119,7 @@ class Acto
         $this->presupuestos = new ArrayCollection();
         $this->pagos = new ArrayCollection();
         $this->movimientos = new ArrayCollection();
+        $this->roles = new ArrayCollection();
     }
 
 
@@ -267,6 +296,72 @@ class Acto
             // set the owning side to null (unless already changed)
             if ($movimiento->getActo() === $this) {
                 $movimiento->setActo(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getFolio(): ?string
+    {
+        return $this->folio;
+    }
+
+    public function setFolio(?string $folio): self
+    {
+        $this->folio = $folio;
+
+        return $this;
+    }
+
+    public function getNumeroLibro(): ?string
+    {
+        return $this->numeroLibro;
+    }
+
+    public function setNumeroLibro(?string $numeroLibro): self
+    {
+        $this->numeroLibro = $numeroLibro;
+
+        return $this;
+    }
+
+    public function getNumeroActa(): ?string
+    {
+        return $this->numeroActa;
+    }
+
+    public function setNumeroActa(?string $numeroActa): self
+    {
+        $this->numeroActa = $numeroActa;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|TipoRol[]
+     */
+    public function getRoles(): Collection
+    {
+        return $this->roles;
+    }
+
+    public function addRole(TipoRol $role): self
+    {
+        if (!$this->roles->contains($role)) {
+            $this->roles[] = $role;
+            $role->setActo($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRole(TipoRol $role): self
+    {
+        if ($this->roles->removeElement($role)) {
+            // set the owning side to null (unless already changed)
+            if ($role->getActo() === $this) {
+                $role->setActo(null);
             }
         }
 

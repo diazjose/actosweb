@@ -69,22 +69,19 @@ class Persona
      *      groups={"Registration", "Profile"}
      * )
      *
-     * @Assert\NotBlank(message="Por favor ingrese DNI.")
      */
     protected $dni;
 
     /**
     * @var string
     *
-    * @ORM\Column(name="cuil", type="string", nullable=false)
-    * @Assert\NotBlank(message="Por favor ingrese Cuil.") 
+    * @ORM\Column(name="cuil", type="string", nullable=true)
     */
     protected $cuil;
 
     /**
      * @var string $fechaNac
      * @ORM\Column(name="fechaNac", type="date", nullable=true)
-     * @Assert\NotBlank(message="Por favor ingrese Fecha de Nacimiento.")
      */
     
     protected $fechaNac;
@@ -94,7 +91,6 @@ class Persona
     *
     * @ORM\Column(name="email", type="string", nullable=true)
     * @Assert\Email()
-    * @Assert\NotBlank(message="Por favor ingrese Email.") 
     */
     protected $email;
 
@@ -102,15 +98,13 @@ class Persona
     * @var string
     *
     * @ORM\Column(name="domicilio", type="string", nullable=true)
-    * @Assert\NotBlank(message="Por favor ingrese Domicilio.") 
     */
     protected $domicilio;
 
     /**
     * @var string
     *
-    * @ORM\Column(name="estadoCivil", type="string", nullable=true)
-    * @Assert\NotBlank(message="Por favor ingrese Estado Civil.") 
+    * @ORM\Column(name="estadoCivil", type="string", nullable=true) 
     */
     protected $estadoCivil;
 
@@ -125,7 +119,6 @@ class Persona
     * @var string
     *
     * @ORM\Column(name="nacionalidad", type="string", nullable=true)
-    * @Assert\NotBlank(message="Por favor ingrese Nacionalidad.") 
     */
     protected $nacionalidad;
 
@@ -145,6 +138,11 @@ class Persona
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", nullable=true)
      */
     private $parent;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\TipoRol", mappedBy="persona", cascade={"persist"})
+     */
+    private $roles;
 
     /**
      * @ORM\Column(name="deletedAt", type="datetime", nullable=true)
@@ -171,6 +169,7 @@ class Persona
     public function __construct()
     {
         $this->archivos = new ArrayCollection();
+        $this->roles = new ArrayCollection();
     }
 
     
@@ -385,6 +384,36 @@ class Persona
     public function setParent(?self $parent): self
     {
         $this->parent = $parent;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|TipoRol[]
+     */
+    public function getRoles(): Collection
+    {
+        return $this->roles;
+    }
+
+    public function addRole(TipoRol $role): self
+    {
+        if (!$this->roles->contains($role)) {
+            $this->roles[] = $role;
+            $role->setPersona($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRole(TipoRol $role): self
+    {
+        if ($this->roles->removeElement($role)) {
+            // set the owning side to null (unless already changed)
+            if ($role->getPersona() === $this) {
+                $role->setPersona(null);
+            }
+        }
 
         return $this;
     }

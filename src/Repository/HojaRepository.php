@@ -47,4 +47,14 @@ class HojaRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findHoja($id){
+        return $this->createQueryBuilder('h')
+            ->innerJoin('h.tipoActo', 'a')
+            ->andWhere('a.id = :val')
+            ->setParameter('val', $id)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }

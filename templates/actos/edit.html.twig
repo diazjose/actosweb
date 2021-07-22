@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Editar Hoja - {{ parent() }}{% endblock %}
+{% block title %}Editar Acto - {{ parent() }}{% endblock %}
 
 {% block body %}
     <br><br>
@@ -9,38 +9,39 @@
             <div class="row align-items-center mb-3 mb-xl-5">
                 <div class="col-md mb-2 mb-md-0">
                     <h1 class="h3 mb-0">
-                    <b>Editar Hoja</b>                    
+                    <b>Editar Acto</b>                    
                     </h1>
                 </div>
 
                 <div class="col-md ml-md-auto text-md-right">
-
+                    {% set r = acto.roles|length %}
+                    {% set m = acto.movimientos|length %}
+                    {% set pr = acto.presupuestos|length %}
+                    {% set p = acto.pagos|length %}
+                    {% if r == 0 and m == 0 and pr == 0 and p == 0 %}
                     <button class="btn btn-sm btn-outline-danger float-right" type="button" data-toggle="modal" data-target="#modalContent">
                     <i class="fas fa-trash-alt"></i> &nbsp; <span>Eliminar</span>
                     </button>
-
-                    <a class="btn btn-sm btn-secondary float-right" style="margin-right:15px;" href="{{ path('hoja_show',{'id': hoja.id }) }}">
-                    <i class="fas fa-arrow-left"></i> &nbsp; Volver a la Hoja
+                    {% endif %}
+                    <a class="btn btn-sm btn-secondary float-right" style="margin-right:15px;" href="{{ path('acto_show',{'id':acto.id}) }}">
+                    <i class="fas fa-arrow-left"></i> &nbsp; Volver al Acto
                     </a>
                 </div>
             </div>
-
-            {{ include('base/_flash.html.twig') }}
-
             <div class="row justify-content-center">
                 <div class="col-md-12 align-items-center">
                     <div class="card card-success">
                         <div class="card-header">
-                            <h3 class="card-title">Editar Hoja</h3>
+                            <h3 class="card-title">Editar Acto</h3>
                         </div>
                         <div class="card-body">
-                            {{ include('hoja/_form.html.twig') }}
+                            {{ include('actos/_form.html.twig') }}
                         </div>
                     </div>
                 </div>    
             </div>    
         </div>
-    </section> 
+    </section>
 
 
 {% endblock %}
@@ -49,7 +50,7 @@
   <div id="modalContent" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog">
       <div class="modal-content">
-        {{ include('personas/_delete_form.html.twig', {"persona" : hoja.id }) }}
+        {{ include('actos/_delete_form.html.twig', {"acto" : acto.id, 'tipo':acto.tipoActo.id }) }}
       </div>
     </div>
   </div>

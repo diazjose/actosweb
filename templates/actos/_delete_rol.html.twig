@@ -1,0 +1,29 @@
+
+
+<form method="post" action="{{ path('acto_delete_rol', {'id': rol}) }}">
+    <input type="hidden" name="_method" value="DELETE">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ rol) }}">
+    <div class="row mx-4 my-4">
+      <div class="col">
+        <h5>¿Seguro que desea eliminar el <b>{{nombre}}</b>?</h5>
+      </div>
+    </div>
+
+
+
+    <div class="row">
+      <div class="col">
+        <div class="modal-footer">
+            <button style="margin-left:15px;" class="btn btn-outline-danger btn-sm float-right" type="submit" >
+            Si, eliminar
+            </button>
+
+            <button type="button" class="btn btn-default btn-sm float-right" data-dismiss="modal">
+            No, cancelar
+            </button>
+        </div>
+      </div>
+    </div>
+
+</form>
+

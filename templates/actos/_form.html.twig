@@ -1,0 +1,36 @@
+
+
+{% set current_path = app.request.get('_route') %}
+{{ form_start(form) }}
+
+    <div class="row">
+        <div class="col-md-6">
+            {{ form_row(form.numeroHoja) }}    
+        </div>
+        <div class="col-md-6">
+            {{ form_row(form.tipoActo) }}      
+        </div>
+    </div>   
+    <div class="row">
+        <div class="col-md-4">
+            {{ form_row(form.folio) }}    
+        </div>
+        <div class="col-md-4">
+            {{ form_row(form.numeroLibro) }}      
+        </div>
+        <div class="col-md-4">
+            {{ form_row(form.numeroActa) }}    
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            {{ form_row(form.fechaInicio) }}    
+        </div>
+    </div> 
+    <hr>
+    {% if current_path == 'acto_new' %}
+    <button class="btn btn-sm float-right btn-outline-primary">Guardar cambios</button>
+    {% else %}
+    <button class="btn btn-sm float-right btn-outline-success">Guardar cambios</button>
+    {% endif %}
+{{ form_end(form) }}

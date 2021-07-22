@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Agregar Hoja - {{ parent() }}{% endblock %}
+{% block title %}Agregar Acto - {{ parent() }}{% endblock %}
 
 {% block body %}
     <br><br>
@@ -10,24 +10,24 @@
 
             <div class="row align-items-center mb-3 mb-xl-5">
                 <div class="col-md mb-2 mb-md-0">
-                    <h1 class="h3 mb-0"><b>Agregar Hoja</b></h1>
+                    <h1 class="h3 mb-0"><b>Agregar Acto</b></h1>
                 </div>
                 <div class="col-md ml-md-auto text-md-right">
 
-                    <a class="btn btn-outline-secondary btn-sm float-right" style="margin-right:15px;" href="{{ path('hoja_index') }}">
+                    <a class="btn btn-outline-secondary btn-sm float-right" style="margin-right:15px;" href="{{ path('acto_index') }}">
                     <i class="fas fa-arrow-left"></i> &nbsp; Volver al listado
                     </a>
 
                 </div>
             </div>
             <div class="row justify-content-center">
-                <div class="col-md-10 align-items-center">
+                <div class="col-md-12 align-items-center">
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title">Registrar Hoja</h3>
+                            <h3 class="card-title"><b>Registrar Acto</b></h3>
                         </div>
                         <div class="card-body">
-                            {{ include('hoja/_form.html.twig') }}
+                            {{ include('actos/_form.html.twig') }}
                         </div>
                     </div>
                 </div>    

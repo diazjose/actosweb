@@ -2,38 +2,40 @@
 
 namespace App\Entity;
 
+use App\Repository\TipoRolRepository;
+use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\EstadoActoRepository")
- * @UniqueEntity("nombre",message="Este Estado ya existe.")
+ * @ORM\Entity(repositoryClass="App\Repository\TipoRolRepository")
  */
-class EstadoActo
+class TipoRol
 {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
-
-     /**
-    * @var string
-    *
-    * @ORM\Column(name="nombre", type="string", nullable=false)
-    * @Assert\NotBlank(message="Por favor ingrese un Estado.") 
-    */
-    protected $nombre;
+    private $id;   
 
     /**
-     * @ORM\OneToMany(targetEntity=Movimiento::class, mappedBy="estado")
+     * @ORM\Column(type="string", length=255)
      */
-    private $movimientos;
+    private $nombre;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Acto", inversedBy="roles", cascade={"persist"})
+     */
+    private $acto;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Persona", inversedBy="roles", cascade={"persist"})
+     */
+    private $persona;    
 
     /**
       * @var \DateTime
@@ -41,8 +43,8 @@ class EstadoActo
       * @ORM\Column(name="createdAt", type="datetime")
       * @Gedmo\Timestampable(on="create")
       */
-      private $createdAt;
-
+    private $createdAt;
+ 
     /**
       * @var \DateTime
       *
@@ -51,11 +53,6 @@ class EstadoActo
       * @Gedmo\Versioned
       */
     private $updatedAt;
-
-    public function __construct()
-    {
-        $this->movimientos = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -98,33 +95,28 @@ class EstadoActo
         return $this;
     }
 
-    /**
-     * @return Collection|Movimiento[]
-     */
-    public function getMovimientos(): Collection
+    public function getActo(): ?Acto
     {
-        return $this->movimientos;
+        return $this->acto;
     }
 
-    public function addMovimiento(Movimiento $movimiento): self
+    public function setActo(?Acto $acto): self
     {
-        if (!$this->movimientos->contains($movimiento)) {
-            $this->movimientos[] = $movimiento;
-            $movimiento->setEstado($this);
-        }
+        $this->acto = $acto;
 
         return $this;
     }
 
-    public function removeMovimiento(Movimiento $movimiento): self
+    public function getPersona(): ?Persona
     {
-        if ($this->movimientos->removeElement($movimiento)) {
-            // set the owning side to null (unless already changed)
-            if ($movimiento->getEstado() === $this) {
-                $movimiento->setEstado(null);
-            }
-        }
+        return $this->persona;
+    }
+
+    public function setPersona(?Persona $persona): self
+    {
+        $this->persona = $persona;
 
         return $this;
     }
+
 }

@@ -10,10 +10,14 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 
+
+/**
+ * @Route("/tipo/caja")
+ */
 class TipoCajaController extends AbstractController
 {
     /**
-     * @Route("/tipo/caja", name="tipo_caja", methods={"GET","POST"})
+     * @Route("/", name="tipo_caja", methods={"GET","POST"})
      */
     public function index(Request $request): Response
     {

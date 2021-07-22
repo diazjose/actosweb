@@ -9,10 +9,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @Route("/tipo/acto")
+ */
 class TipoActoController extends AbstractController
 {
     /**
-     * @Route("/tipo/acto", name="tipo_acto", methods={"GET","POST"})
+     * @Route("/", name="tipo_acto", methods={"GET","POST"})
      */
     public function index(Request $request): Response
     {
