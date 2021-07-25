@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Caja;
 use App\Entity\TipoCaja;
+use App\Entity\TipoPago;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -22,6 +23,12 @@ class CajaType extends AbstractType
                 'label' => 'Concepto',
                 'required' => true,
              ])
+            ->add('tipoPago', EntityType::class, [
+                'class' => TipoPago::class,
+                'choice_label' => 'nombre',
+                'label' => 'Tipo de Pago',
+                'required' => true,
+             ]) 
             ->add('detalle', TextareaType::class, [
                 'attr' => ['class' => 'tinymce'],
                 'required' => false,

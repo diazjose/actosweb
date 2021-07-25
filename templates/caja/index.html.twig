@@ -26,7 +26,7 @@
           {% if m.concepto.nombre  == 'INICIO' %}
             {% set inicio = m.monto  %}
           {% endif %}
-          {% if m.concepto.nombre  == 'ENTRADA' %}
+          {% if m.concepto.nombre  == 'ENTRADA' and m.tipoPago.nombre == 'EFECTIVO' %}
             {% set ingreso = ingreso + m.monto  %}
           {% endif %}
           {% if m.concepto.nombre  == 'SALIDA' %}
@@ -65,7 +65,7 @@
         {{ include('base/_flash.html.twig') }}
 
           <div class="row">
-            <div class="col-4">
+            <div class="col-3">
                 <div class="card">
                     <div class="card-header">
                     <h3 class="card-title"><i class="fas fa-plus"></i> &nbsp;<b>Agregar Movimiento</b></h3>
@@ -76,7 +76,7 @@
                     </div>
                 </div>
             </div> 
-            <div class="col-8">
+            <div class="col-9">
               <div class="card">
                 <div class="card-header">
                   <h3 class="card-title"><i class="fas fa-list"></i> &nbsp;<b>Listado de Movimientos</b></h3>
@@ -88,8 +88,9 @@
                       <tr>
                           <th>Fecha</th>
                           <th>Concepto</th>
+                          <th>Pago</th>
                           <th>Detalle</th>
-                          <th>Monto ($)</th>
+                          <th>Monto</th>
                           <th>Acción</th>
                       </tr>
                     </thead>
@@ -98,7 +99,13 @@
                       <tr>
                           <td>{{m.fecha ? m.fecha|date('d/m/Y')}}</td>
                           <td>{{m.concepto.nombre}}</td>
-                          <td>{{m.detalle}}</td>
+                          <td>{{m.tipoPago.nombre}} </td>
+                          <td>
+                            {{m.detalle}}
+                            {% if m.acto %}
+                             // Acto - N° Hoja <a href="{{path('acto_show',{'id':m.acto.id})}}">{{m.acto.numeroHoja}}</a>
+                            {% endif %}
+                          </td>
                           <td>{{m.monto}}</td>
                           <td width="80" class="text-right">
                             <a class="m-0 p-1 btn btn-sm" title="Editar registro" style="color:green" href="javascript:void(0)" data-toggle="modal" data-target="#modalContent{{ m.id }}" onclick="con({{m.concepto.id}},{{m.id}})">
@@ -115,9 +122,10 @@
                       <tr>
                           <th>Fecha</th>
                           <th>Concepto</th>
+                          <th>Pago</th>
                           <th>Detalle</th>
-                          <th>Monto ($)</th>
-                          <th></th>
+                          <th>Monto</th>
+                          <th>Acción</th>
                       </tr>
                     </tfoot>
                   </table>

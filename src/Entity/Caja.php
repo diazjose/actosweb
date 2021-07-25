@@ -48,6 +48,12 @@ class Caja
      */
     private $concepto;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=TipoPago::class, inversedBy="cajas")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $tipoPago;
+
     /** 
      * @ORM\ManyToOne(targetEntity="Acto", inversedBy="pagos")
      * @ORM\JoinColumn(nullable=true)
@@ -168,6 +174,18 @@ class Caja
     public function setActo(?Acto $acto): self
     {
         $this->acto = $acto;
+
+        return $this;
+    }
+
+    public function getTipoPago(): ?TipoPago
+    {
+        return $this->tipoPago;
+    }
+
+    public function setTipoPago(?TipoPago $tipoPago): self
+    {
+        $this->tipoPago = $tipoPago;
 
         return $this;
     }

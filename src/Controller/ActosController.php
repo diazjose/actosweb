@@ -6,6 +6,8 @@ use App\Entity\Acto;
 use App\Entity\Persona;
 use App\Entity\Hoja;
 use App\Entity\TipoRol;
+use App\Entity\TipoCaja;
+use App\Entity\TipoPago;
 use App\Repository\HojaRepository;
 use App\Repository\ActosRepository;
 use App\Form\ActoType;
@@ -74,8 +76,12 @@ class ActosController extends AbstractController
      */
     public function show(Acto $acto): Response
     {
+        $conceptos = $entityManager = $this->getDoctrine()->getManager()->getRepository(TipoCaja::class)->findAll();
+        $tipos = $entityManager = $this->getDoctrine()->getManager()->getRepository(TipoPago::class)->findAll();
         return $this->render('actos/show.html.twig', [
             'acto' => $acto,
+            'conceptos' => $conceptos,
+            'tipos' => $tipos,
         ]);
     }
     

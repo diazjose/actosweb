@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Caja;
 use App\Entity\TipoCaja;
+use App\Entity\TipoPago;
+use App\Entity\Acto;
 use App\Form\CajaType;
 use App\Form\CajaFiltroType;
 use App\Repository\CajaRepository;
@@ -54,6 +56,60 @@ class CajaController extends AbstractController
     }
 
     /**
+     * @Route("/new_pago", name="caja_pago", methods={"GET","POST"})
+     */
+    public function new_pago(Request $request): Response
+    {
+        //if ($this->isCsrfTokenValid($request->request->get('_token'))) {
+            $idActo = $request->request->get('id');
+            $caja = new Caja();
+            
+            $entityManager = $this->getDoctrine()->getManager();
+            $acto = $entityManager->getRepository(Acto::class)->find($idActo);
+            $tipoCaja = $entityManager->getRepository(TipoCaja::class)->find($request->request->get('concepto'));
+            $tipoPago = $entityManager->getRepository(TipoPago::class)->find($request->request->get('tipoPago'));
+            
+            $caja->setConcepto($tipoCaja);
+            $caja->setTipoPago($tipoPago);
+            $caja->setActo($acto);
+            $caja->setMonto($request->request->get('monto'));
+            $con = count($acto->getPagos()) + 1;
+            $caja->setDetalle('Pago de cuota N°'.$con);
+
+            $date = new \DateTime();
+            $caja->setFecha($date);
+            $caja->setCreatedAt($date);
+            $caja->setUpdatedAt($date);
+            $entityManager->persist($caja);
+            $entityManager->flush();
+            $this->addFlash('success', '!Pago realizado correctamente!');
+                
+            return $this->redirectToRoute('acto_show', ['id' => $idActo]);
+            
+        //}
+        
+    }
+
+    /**
+     * @Route("/edit_pago/{id}", name="caja_pago_edit", methods={"GET","POST"})
+     */
+    public function edit_pago(Request $request, Caja $caja): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $caja->setMonto($request->request->get('monto'));
+        $tipoTipo = $entityManager->getRepository(TipoTipo::class)->find($request->request->get('tipoPago'));
+        $caja->setTipoPago($tipoPago);    
+        $date = new \DateTime();
+        $caja->setFecha($date);
+        $caja->setUpdatedAt($date);
+        $entityManager->persist($caja);
+        $entityManager->flush();
+        $this->addFlash('success', '!Pago actualizado correctamente!');
+             
+        return $this->redirectToRoute('acto_show', ['id' => $caja->getActo()->getId()]);
+    }
+
+    /**
      * @Route("/edit/{id}", name="caja_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Caja $caja): Response
@@ -98,10 +154,12 @@ class CajaController extends AbstractController
         $inicio = '';
         $fin = '';
         $concepto = '';
-        if($request->request->get('fechaIni') or $request->request->get('fechaIni') or $request->request->get('concepto')){
+        $tipo = '';
+        if($request->request->get('fechaIni') or $request->request->get('fechaIni') or $request->request->get('concepto') or $request->request->get('tipoPago')){
             $consulta['fechaIni'] = $request->request->get('fechaIni');
             $consulta['fechaFin'] = $request->request->get('fechaFin');
             $consulta['concepto'] = $request->request->get('concepto');
+            $consulta['tipoPago'] = $request->request->get('tipoPago');
         }
         if($request->request->get('fechaIni')){
             $inicio = $request->request->get('fechaIni');
@@ -113,27 +171,25 @@ class CajaController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $concepto = $entityManager->getRepository(TipoCaja::class)->find($request->request->get('concepto'));
         }
+        if($request->request->get('tipoPago') != ''){
+            $entityManager = $this->getDoctrine()->getManager();
+            $tipo = $entityManager->getRepository(TipoPago::class)->find($request->request->get('tipoPago'));
+        }
 
         $movimientos = $cajaRepository->findForActionIndex($consulta);
-        /*
-        if($request->request->get('fechaIni')){
-            var_dump('si');
-            die();
-        }else{
-            $em = $this->getDoctrine()->getManager();
-            //$movimientos = $em->getRepository(Caja::class)->findBy(array(), array('monto' => 'DESC')); 
-            $movimientos = $cajaRepository->todos(); 
-            $conceptos = $em->getRepository(TipoCaja::class)->findAll();
-        }*/
+        
         $em = $this->getDoctrine()->getManager();
         $conceptos = $em->getRepository(TipoCaja::class)->findAll();
+        $tipos = $em->getRepository(TipoPago::class)->findAll();
 
         return $this->render('caja/consultas.html.twig', [
             'movimientos' => $movimientos,
             'conceptos' => $conceptos,
+            'tipos' => $tipos,
             'inicio' => $inicio,
             'fin' => $fin,
             'concepto' => $concepto,
+            'tipo' => $tipo,
         ]);
     }
 

@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-{% block title %}Consultas de Caja - {{ parent() }}{% endblock %}
+{% block title %}Tipos de Pago - {{ parent() }}{% endblock %}
 {% block stylesheets %}
     <!-- DataTables -->
   <link rel="stylesheet" href="{{ asset('actosweb/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
@@ -15,113 +15,59 @@
 
         <div class="row align-items-center mb-3 mb-xl-5">
           <div class="col-md mb-2 mb-md-0">
-            <h1 class="h3 mb-0"><b>Consultas de Caja</b></h1><br>
-            <div class="alert alert-warning" role="alert">
-              <h1 class="h5 mb-0"> {% if concepto != '' %} <b>{{concepto.nombre}}</b> {% else %} Todos los <b>Conceptos</b> {% endif %}Desde <b>{{ inicio ? inicio|date('d/m/Y') : '"siempre"' }}</b> Hasta <b>{{ fin ? fin|date('d/m/Y') : "now"|date("d/m/Y") }}</b></h1>
-            </div>
+            <h1 class="h3 mb-0"><b>Tipos de Pago</b></h1>
           </div>
         </div>
-        {% set ingreso = 0 %}
-        {% set egreso = 0 %}
-        {% set total = 0 %}
-        {% for m in movimientos %}
-          {% if m.concepto.nombre  == 'ENTRADA' and m.tipoPago.nombre  == 'EFECTIVO' %}
-            {% set ingreso = ingreso + m.monto  %}
-          {% endif %}
-          {% if m.concepto.nombre  == 'SALIDA' %}
-            {% set egreso = egreso + m.monto  %}
-          {% endif %}
-        {% endfor %}
-        {% set total = ingreso - egreso %}
-        <div class="row">
-            <div class="col-4 border border-success p-4">
-                <h1 class="h4 mb-0">
-                  <b>Entrada: </b>
-                  $ {{ingreso}}
-                </h1>  
-            </div>
-            <div class="col-4 border border-danger p-4">
-                <h1 class="h4 mb-0">
-                  <b>Salida: </b>
-                  $ {{egreso}}
-                </h1>  
-            </div>
-            <div class="col-4 border border-secondary p-4">
-                <h1 class="h4 mb-0">
-                    <b>Total: </b>
-                    $ {{total}}
-                </h1>    
-            </div>
-
-        </div>
-        <br>
 
         {{ include('base/_flash.html.twig') }}
 
           <div class="row">
-            <div class="col-3">
+            <div class="col-4">
                 <div class="card">
                     <div class="card-header">
-                    <h3 class="card-title"><i class="fas fa-search"></i> &nbsp;<b>Buscar Movimientos</b></h3>
+                    <h3 class="card-title"><i class="fas fa-plus"></i> &nbsp;<b>Agregar Tipos de Pago</b></h3>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                      {{ include('caja/_consultar_form.html.twig') }}
+                      {{ include('tipo_pago/_form.html.twig') }}
                     </div>
                 </div>
-                
             </div> 
-            <div class="col-9">
-               
+            <div class="col-8">
               <div class="card">
                 <div class="card-header">
-                  <h3 class="card-title"><i class="fas fa-list"></i> &nbsp;<b>Listado de Movimientos</b></h3>
+                  <h3 class="card-title"><i class="fas fa-list"></i> &nbsp;<b>Listado de Tipos de Pagos</b></h3>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
                   <table id="example1" class="table table-bordered table-hover">
                     <thead>
                       <tr>
-                          <th>Fecha</th>
-                          <th>Concepto</th>
-                          <th>Pago</th>
-                          <th>Detalle</th>
-                          <th>Monto</th>
-                          <th>Acción</th>
+                          <th>#</th>
+                          <th>Nombre</th>
+                          <th></th>
                       </tr>
                     </thead>
                     <tbody>
-                      {% for m in movimientos %}
+                      {% set i = 1 %}
+                      {% for t in tipos %}
                       <tr>
-                          <td>{{m.fecha ? m.fecha|date('d/m/Y')}}</td>
-                          <td>{{m.concepto.nombre}}</td>
-                          <td>{{m.tipoPago.nombre}}</td>
-                          <td>
-                            {{m.detalle}}
-                            {% if m.acto %}
-                             // Acto - N° Hoja <a href="{{path('acto_show',{'id':m.acto.id})}}">{{m.acto.numeroHoja}}</a>
-                            {% endif %}
-                          </td>
-                          <td>{{m.monto}}</td>
+                          <td>{{i}}</td>
+                          <td>{{t.nombre}}</td>
                           <td width="80" class="text-right">
-                            <a class="m-0 p-1 btn btn-sm" title="Editar registro" style="color:green" href="javascript:void(0)" data-toggle="modal" data-target="#modalContent{{ m.id }}" onclick="con({{m.concepto.id}},{{m.id}})">
+                            <a class="m-0 p-1 btn btn-sm" title="Editar registro" href="javascript:void(0)" data-toggle="modal" data-target="#modalContent{{ t.id }}">
                               <i class="fas fa-edit"></i>
-                            </a>
-                            <a class="m-0 p-1 btn btn-sm" style="color:red;" title="Eliminar registro" href="javascript:void(0)" data-toggle="modal" data-target="#deleteContent{{m.id}}">
-                                <i class="fas fa-trash-alt"></i>
                             </a>
                           </td>
                       </tr>
+                      {% set i = i + 1 %}
                       {% endfor %}
                     </tbody>
                     <tfoot>
                       <tr>
-                          <th>Fecha</th>
-                          <th>Concepto</th>
-                          <th>Pago</th>
-                          <th>Detalle</th>
-                          <th>Monto</th>
-                          <th>Acción</th>
+                          <th>#</th>
+                          <th>Nombre</th>
+                          <th></th>
                       </tr>
                     </tfoot>
                   </table>
@@ -134,26 +80,19 @@
       </div>        
 
 {% block modal_content %}
-  {% for m in movimientos %}
-  <div id="modalContent{{ m.id }}" class="modal fade" tabindex="-1" role="dialog">
+  {% for t in tipos %}
+  <div id="modalContent{{ t.id }}" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog">      
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title"><i class="fas fa-edit"></i> <b>Actualizar Movimiento</b></h5>
+          <h5 class="modal-title"><i class="fas fa-edit"></i> <b>Actualizar Tipo de Pago</b></h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          {{ include('caja/_edit_form.html.twig', {"mov" : m, "conceptos":conceptos }) }}
+          {{ include('tipo_pago/_edit_form.html.twig', {"tipo" : t }) }}
         </div>
-      </div>
-    </div>
-  </div>
-  <div id="deleteContent{{m.id}}" class="modal fade" tabindex="-1" role="dialog">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        {{ include('caja/_delete_form.html.twig', {"caja" : m.id }) }}
       </div>
     </div>
   </div>
@@ -192,14 +131,8 @@
             "responsive": true,
             });
         });
-        $("#caja_monto").val('');
-        $("#caja_detalle").val('');
-
-        function con(con,id){
-          $('#concepto'+id+' option[value="'+ con +'"]').attr("selected",true);
-        }
-
-         
+        
+        $("#tipo_pago_nombre" ).val(""); 
     </script>
     {% endblock %}        
 {% endblock %}

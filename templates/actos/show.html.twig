@@ -189,6 +189,48 @@
                                 {% endfor %}
                             <!-- Fin Datos de Movimientos -->
 
+                            <!-- Inicio Datos de Pagos -->
+                            
+                              <tr style="background: #80808012;">
+                                  <th colspan="6" class="text-center align-middle">
+                                    Pagos
+                                  </th>
+                              </tr>
+                                <th colspan="6" class="align-middle">
+                                    <a class="btn btn-sm btn-outline-info float-left" type="button" href="javascript:void(0)" data-toggle="modal" data-target="#Pago">
+                                      <i class="fas fa-plus"></i> &nbsp; 
+                                        <span>Agregar Pago</span>
+                                    </a>
+                                </th>
+                                 <tr>
+                                    <th class="text-right">#</th>
+                                    <th class="text-right">Fecha</th>
+                                    <th class="text-right">Monto</th>
+                                    <th class="text-right">Detalle</th>
+                                    <th class="text-right"></th>
+                                    <th></th>
+                                </tr>
+                                {% set i = 1 %}
+                                {% for p in acto.pagos %}
+                                  <tr>
+                                      <td class="text-right">{{i}}</td>
+                                      <td class="text-right">{{ p.fecha|date('d/m/Y')}}</td>
+                                      <td class="text-right">$ {{p.monto}}</td>
+                                      <td class="text-right">{{p.detalle}}</td>
+                                      <td class="text-right"></td>
+                                      <td width="80" class="text-right">
+                                        <a class="m-0 p-1 btn btn-sm" title="Editar registro" style="color:green" href="javascript:void(0)" data-toggle="modal" data-target="#Pago{{ p.id }}" onclick="con({{p.concepto.id}},{{p.id}})">
+                                          <i class="fas fa-edit"></i>
+                                        </a>
+                                      </td>
+                                  </tr>
+                                  {% set i = i + 1 %}
+                                {% else %}
+                                No exiten pagos realizados.  
+                                {% endfor %}
+                            <!-- Fin Datos de Pagos -->
+
+
                         </tbody>
 
                     </table>
@@ -209,6 +251,38 @@
       </div>
     </div>
   </div>
+  <div id="Pago" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">      
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="nav-icon fas fa-cash-register"></i> <b>Registrar Pago</b></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          {{ include('actos/_pago_form.html.twig', {"acto" : acto.id, 'conceptos' : conceptos}) }}
+        </div>
+      </div>
+    </div>
+  </div>
+  {% for p in acto.pagos %}
+  <div id="Pago{{p.id}}" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">      
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="nav-icon fas fa-cash-register"></i> <b>Registrar Pago</b></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          {{ include('actos/_edit_pago_form.html.twig', {"id" : p.id, 'pago':p, 'conceptos' : conceptos}) }}
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
   {% for p in acto.getRoles %}
   <div id="delTipoRol{{p.id}}" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog">

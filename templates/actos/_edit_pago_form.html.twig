@@ -1,0 +1,24 @@
+<form method="post" action="{{ path('caja_pago_edit', {'id':id}) }}">
+
+    <input type="hidden" name="_token" value="{{ csrf_token('new') }}">
+    <div class="form-group">
+        <label for="nombre">Monto</label>
+        <input type="number" class="form-control" name="monto" id="monto" value="{{pago.monto}}">
+    </div>
+    
+
+    <div class="form-group">
+        <label for="concepto">Concepto</label>
+         <select id="concepto" class="form-control" name="concepto">
+            {% for con in conceptos %}
+                {% if con.nombre == 'ENTRADA'%}
+                <option value="{{con.id}}" >{{con.nombre}}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-sm float-right btn-outline-info mx-2">Guardar Cambio</button>
+    </div>
+
+</form>

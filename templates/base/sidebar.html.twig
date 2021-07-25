@@ -99,6 +99,16 @@
               </li>
               <!-- Fin de Confgi Caja -->
 
+              <!-- Inicio de Confgi Tipo de Pago -->
+              {% set opciones = ["tipo_acto"] %}
+              <li class="nav-item">
+                <a href="{{ path('tipo_pago') }}" class="nav-link {{ current_path in opciones ? "active" : ""  }}">
+                  <i class="nav-icon fas fa-copy"></i>
+                  <p>Tipos de Pagos</p>
+                </a>                
+              </li>
+              <!-- Fin de Confgi Tipo de Pago -->
+
               <!-- Inicio de Confgi Estados de Actos -->
               {% set opciones = ["estado_acto"] %}
               <li class="nav-item">

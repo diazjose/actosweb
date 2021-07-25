@@ -63,6 +63,15 @@ class CajaRepository extends ServiceEntityRepository
           ->setParameter("concepto", $filtro["concepto"])
         ;
       }
+
+      if(isset($filtro["tipoPago"]) && $filtro["tipoPago"] != '') {
+        $qb
+          ->innerJoin('e.tipoPago', 'p')
+          ->andWhere("p.id = :tipoPago")
+          ->setParameter("tipoPago", $filtro["tipoPago"])
+        ;
+      }
+
       return $qb->orderBy('e.fecha', 'DESC')->getQuery()->getResult();
     }
     /*

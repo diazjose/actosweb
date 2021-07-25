@@ -33,6 +33,7 @@ class TipoCajaController extends AbstractController
             $entityManager->persist($concepto);
             $entityManager->flush();
             $this->addFlash('success', '!Concepto agregado correctamente!');
+            return $this->redirectToRoute('tipo_caja');
             
         }
         $em = $this->getDoctrine()->getManager();

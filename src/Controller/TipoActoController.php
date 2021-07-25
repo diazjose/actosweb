@@ -31,6 +31,7 @@ class TipoActoController extends AbstractController
             $entityManager->persist($acto);
             $entityManager->flush();
             $this->addFlash('success', '!Acto agregado correctamente!');
+            return $this->redirectToRoute('tipo_acto');
             
         }
         $em = $this->getDoctrine()->getManager();
