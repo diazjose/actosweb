@@ -94,6 +94,7 @@ class Acto
 
      /**
      * @ORM\OneToMany(targetEntity=Movimiento::class, mappedBy="acto")
+     * @ORM\OrderBy({"id" = "DESC"})
      */
     private $movimientos;
 

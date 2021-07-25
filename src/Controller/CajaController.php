@@ -37,12 +37,13 @@ class CajaController extends AbstractController
             $entityManager->flush();
             $this->addFlash('success', '!Movimiento agregado correctamente!');
             
-            //return $this->redirectToRoute('caja_index');
+            return $this->redirectToRoute('caja_index');
             
         }
         $em = $this->getDoctrine()->getManager();
         //$movimientos = $em->getRepository(Caja::class)->findBy(array(), array('monto' => 'DESC')); 
-        $movimientos = $cajaRepository->todos(); 
+        //$movimientos = $cajaRepository->todos(); 
+        $movimientos = $cajaRepository->cajaDia();
         $conceptos = $em->getRepository(TipoCaja::class)->findAll();
 
         return $this->render('caja/index.html.twig', [

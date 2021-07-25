@@ -7,6 +7,7 @@ use App\Entity\Persona;
 use App\Entity\Hoja;
 use App\Entity\TipoRol;
 use App\Repository\HojaRepository;
+use App\Repository\ActosRepository;
 use App\Form\ActoType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,11 +23,11 @@ class ActosController extends AbstractController
     /**
      * @Route("/", name="acto_index", methods={"GET"})
      */
-    public function index(Request $request): Response
+    public function index(Request $request, ActosRepository $actosRepository): Response
     {
         $em = $this->getDoctrine()->getManager();
-        $actos = $em->getRepository(Acto::class)->findAll();        
-
+        $actos = $em->getRepository(Acto::class)->findAll();       
+        
         return $this->render('actos/index.html.twig', [
                 'actos' => $actos,
             ]);       

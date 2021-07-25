@@ -109,6 +109,16 @@
               </li>
               <!-- Fin de Confgi Estados de Actos -->
 
+              <!-- Inicio de Confgi Lugares de Actos -->
+              {% set opciones = ["lugar_acto"] %}
+              <li class="nav-item">
+                <a href="{{ path('lugar_acto') }}" class="nav-link {{ current_path in opciones ? "active" : ""  }}">
+                  <i class="nav-icon fas fa-map-marker-alt"></i>
+                  <p>Lugares de Actos</p>
+                </a>                
+              </li>
+              <!-- Fin de Confgi Lugares de Actos -->
+
           <!-- Fin de Configuracion -->
 
         </ul>

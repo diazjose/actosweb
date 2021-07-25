@@ -24,6 +24,7 @@ class CajaType extends AbstractType
              ])
             ->add('detalle', TextareaType::class, [
                 'attr' => ['class' => 'tinymce'],
+                'required' => false,
             ])
         ;
     }

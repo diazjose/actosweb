@@ -85,4 +85,16 @@ class CajaRepository extends ServiceEntityRepository
         ;
         //return $this->findBy(array(), array('fecha' => 'DESC'));
     }
+
+    public function cajaDia()
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere("c.fecha = :fecha")
+            ->setParameter("fecha", date('Y-m-d'))
+            ->orderBy('c.id', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+        //return $this->findBy(array(), array('fecha' => 'DESC'));
+    }
 }

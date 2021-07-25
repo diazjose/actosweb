@@ -39,8 +39,9 @@
                       <tr>
                           <th>N° Hoja</th>
                           <th>Tipo</th>
-                          <th>Favor/Requirente</th>
+                          <th>Propietario/Requirente</th>
                           <th>Fecha Inicio</th>
+                          <th>Lugar</th>
                           <th>Estado</th>
                       </tr>
                     </thead>
@@ -49,9 +50,40 @@
                       <tr>
                           <td onClick="window.location='{{ path('acto_show', {'id': ac.getId}) }}'">{{ac.numeroHoja}}</td>
                           <td onClick="window.location='{{ path('acto_show', {'id': ac.getId}) }}'">{{ac.tipoActo.nombre}}</td>
-                          <td onClick="window.location='{{ path('acto_show', {'id': ac.getId}) }}'"></td>
+                          <td onClick="window.location='{{ path('acto_show', {'id': ac.getId}) }}'">
+                            {% set r = ac.roles|length %}
+                            {% set i = 1 %}
+                            {% for p in ac.roles %}
+                              {% if p.nombre == 'REQUIRENTE' or p.nombre == 'PROPIETARIO' %}
+                                {% if i == 1  %} {% else %} / {% endif %}
+                                  {{p.persona.apellidos ~ ', ' ~ p.persona.nombre}}
+                                {% endif %}
+                              {% set i = i + 1 %}
+                            {% endfor %}
+                          </td>
                           <td onClick="window.location='{{ path('acto_show', {'id': ac.getId}) }}'">{{ac.fechaInicio|date('d/m/Y')}}</td>
-                          <td onClick="window.location='{{ path('acto_show', {'id': ac.getId}) }}'"></td>
+                          <td onClick="window.location='{{ path('acto_show', {'id': ac.getId}) }}'">
+                            {% set i = 1 %}
+                            {% for m in ac.movimientos %}
+                              {% if i == 1 %}
+                                {{m.lugar.nombre}} 
+                              {% endif %}
+                              {% set i = i + 1 %}
+                            {% else %}
+                            ----------  
+                            {% endfor %}
+                          </td>
+                          <td onClick="window.location='{{ path('acto_show', {'id': ac.getId}) }}'">
+                            {% set i = 1 %}
+                            {% for m in ac.movimientos %}
+                              {% if i == 1 %}
+                                {{m.estado.nombre}}                                
+                              {% endif %}
+                              {% set i = i + 1 %}
+                            {% else %}
+                            ----------  
+                            {% endfor %}
+                          </td>
                           
                       </tr>
                       {% endfor %}
@@ -62,6 +94,7 @@
                           <th>Tipo</th>
                           <th>Favor/Requirente</th>
                           <th>Fecha Inicio</th>
+                          <th>Lugar</th>
                           <th>Estado</th>
                       </tr>
                     </tfoot>

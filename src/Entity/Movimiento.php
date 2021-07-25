@@ -9,7 +9,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass=MovimientoRepository::class)
+ * @ORM\Entity(repositoryClass="App\Repository\MovimientoRepository")
  */
 class Movimiento
 {
@@ -30,22 +30,28 @@ class Movimiento
     /**
     * @var string
     *
-    * @ORM\Column(name="fechaFin", type="date", nullable=false)
+    * @ORM\Column(name="fechaFin", type="date", nullable=true)
     */
     protected $fechaFin;
-
-     /**
+        
+    /**
     * @var string
     *
-    * @ORM\Column(name="Lugar", type="date", nullable=false)
+    * @ORM\Column(name="observacion", type="string", nullable=true)
     */
-    protected $lugar;
+    protected $observacion;
 
     /**
      * @ORM\ManyToOne(targetEntity=EstadoActo::class, inversedBy="movimientos")
      * @ORM\JoinColumn(nullable=false)
      */
     private $estado;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=LugarActo::class, inversedBy="movimientos")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $lugar;
 
     /**
      * @ORM\ManyToOne(targetEntity=Acto::class, inversedBy="movimientos")
@@ -97,19 +103,7 @@ class Movimiento
         $this->fechaFin = $fechaFin;
 
         return $this;
-    }
-
-    public function getLugar(): ?\DateTimeInterface
-    {
-        return $this->lugar;
-    }
-
-    public function setLugar(\DateTimeInterface $lugar): self
-    {
-        $this->lugar = $lugar;
-
-        return $this;
-    }
+    }    
 
     public function getEstado(): ?EstadoActo
     {
@@ -155,6 +149,30 @@ class Movimiento
     public function setUpdatedAt(\DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getObservacion(): ?string
+    {
+        return $this->observacion;
+    }
+
+    public function setObservacion(?string $observacion): self
+    {
+        $this->observacion = $observacion;
+
+        return $this;
+    }
+
+    public function getLugar(): ?LugarActo
+    {
+        return $this->lugar;
+    }
+
+    public function setLugar(?LugarActo $lugar): self
+    {
+        $this->lugar = $lugar;
 
         return $this;
     }

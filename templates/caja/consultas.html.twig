@@ -21,6 +21,40 @@
             </div>
           </div>
         </div>
+        {% set ingreso = 0 %}
+        {% set egreso = 0 %}
+        {% set total = 0 %}
+        {% for m in movimientos %}
+          {% if m.concepto.nombre  == 'ENTRADA' %}
+            {% set ingreso = ingreso + m.monto  %}
+          {% endif %}
+          {% if m.concepto.nombre  == 'SALIDA' %}
+            {% set egreso = egreso + m.monto  %}
+          {% endif %}
+        {% endfor %}
+        {% set total = ingreso - egreso %}
+        <div class="row">
+            <div class="col-4 border border-success p-4">
+                <h1 class="h4 mb-0">
+                  <b>Entrada: </b>
+                  $ {{ingreso}}
+                </h1>  
+            </div>
+            <div class="col-4 border border-danger p-4">
+                <h1 class="h4 mb-0">
+                  <b>Salida: </b>
+                  $ {{egreso}}
+                </h1>  
+            </div>
+            <div class="col-4 border border-secondary p-4">
+                <h1 class="h4 mb-0">
+                    <b>Total: </b>
+                    $ {{total}}
+                </h1>    
+            </div>
+
+        </div>
+        <br>
 
         {{ include('base/_flash.html.twig') }}
 

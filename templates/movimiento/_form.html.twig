@@ -1,0 +1,31 @@
+{% set current_path = app.request.get('_route') %}
+{{ form_start(form) }}
+
+    <div class="row">
+        <div class="col-md-6">
+            {{ form_row(form.lugar) }}    
+        </div>
+        <div class="col-md-6">
+            {{ form_row(form.estado) }}      
+        </div>
+    </div>   
+    <div class="row">
+        <div class="col-md-6">
+            {{ form_row(form.fechaInicio) }}    
+        </div>
+        <div class="col-md-6">
+            {{ form_row(form.fechaFin) }}    
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            {{ form_row(form.observacion) }}      
+        </div>
+    </div>     
+    <hr>
+    {% if current_path == 'movimiento_new' %}
+    <button class="btn btn-sm float-right btn-outline-primary">Guardar cambios</button>
+    {% else %}
+    <button class="btn btn-sm float-right btn-outline-success">Guardar cambios</button>
+    {% endif %}
+{{ form_end(form) }}
