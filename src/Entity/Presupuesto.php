@@ -28,12 +28,10 @@ class Presupuesto
     protected $fecha;
 
     /**
-    * @var string
-    *
-    * @ORM\Column(name="detalle", type="string", nullable=false, length=500)
-    * @Assert\NotBlank(message="Por favor ingrese Detalle.") 
-    */
-    protected $detalle;
+     * @ORM\ManyToOne(targetEntity=DetallePresupuesto::class, inversedBy="presupuestos")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $detalle;
 
     /**
     * @var string

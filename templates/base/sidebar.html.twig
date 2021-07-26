@@ -129,6 +129,16 @@
               </li>
               <!-- Fin de Confgi Lugares de Actos -->
 
+              <!-- Inicio de Confgi Detalle Presupuesto -->
+              {% set opciones = ["detalle_index"] %}
+              <li class="nav-item">
+                <a href="{{ path('detalle_index') }}" class="nav-link {{ current_path in opciones ? "active" : ""  }}">
+                  <i class="nav-icon fas fa-list"></i>
+                  <p>Detalle Presupuesto</p>
+                </a>                
+              </li>
+              <!-- Fin de Confgi Detalle Presupuesto -->
+
           <!-- Fin de Configuracion -->
 
         </ul>

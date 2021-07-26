@@ -1,0 +1,138 @@
+{% extends 'base.html.twig' %}
+{% block title %}Detalle de Presupuesto - {{ parent() }}{% endblock %}
+{% block stylesheets %}
+    <!-- DataTables -->
+  <link rel="stylesheet" href="{{ asset('actosweb/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('actosweb/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('actosweb/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+{% endblock %}
+{% block body %}
+  
+      <br><br>
+      
+      <section class="content">
+        <div class="container-fluid">
+
+        <div class="row align-items-center mb-3 mb-xl-5">
+          <div class="col-md mb-2 mb-md-0">
+            <h1 class="h3 mb-0"><b>Detalles de Presupuestos</b></h1>
+          </div>
+        </div>
+
+        {{ include('base/_flash.html.twig') }}
+
+          <div class="row">
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">
+                    <h3 class="card-title"><i class="fas fa-plus"></i> &nbsp;<b>Agregar Detalle</b></h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                      {{ include('detalle_presupuesto/_form.html.twig') }}
+                    </div>
+                </div>
+            </div> 
+            <div class="col-8">
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title"><i class="fas fa-list"></i> &nbsp;<b>Listado de Detalles</b></h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                  <table id="example1" class="table table-bordered table-hover">
+                    <thead>
+                      <tr>
+                          <th>#</th>
+                          <th>Nombre</th>
+                          <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% set i = 1 %}
+                      {% for t in detalles %}
+                      <tr>
+                          <td>{{i}}</td>
+                          <td>{{t.nombre}}</td>
+                          <td width="80" class="text-right">
+                            <a class="m-0 p-1 btn btn-sm" title="Editar registro" href="javascript:void(0)" data-toggle="modal" data-target="#modalContent{{ t.id }}">
+                              <i class="fas fa-edit"></i>
+                            </a>
+                          </td>
+                      </tr>
+                      {% set i = i + 1 %}
+                      {% endfor %}
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                          <th>#</th>
+                          <th>Nombre</th>
+                          <th></th>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+                <!-- /.card-body -->
+              </div>
+            </div>             
+          </div>
+        </div>
+      </div>        
+
+{% block modal_content %}
+  {% for t in detalles %}
+  <div id="modalContent{{ t.id }}" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">      
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="fas fa-edit"></i> <b>Actualizar Detalle</b></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          {{ include('detalle_presupuesto/_edit_form.html.twig', {"tipo" : t }) }}
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+{% endblock modal_content %}
+
+
+    {% block javascripts %}
+    <!-- DataTables  & Plugins -->
+    <script src="{{ asset('actosweb/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('actosweb/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('actosweb/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('actosweb/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('actosweb/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('actosweb/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('actosweb/plugins/jszip/jszip.min.js') }}"></script>
+    <script src="{{ asset('actosweb/plugins/pdfmake/pdfmake.min.js') }}"></script>
+    <script src="{{ asset('actosweb/plugins/pdfmake/vfs_fonts.js') }}"></script>
+    <script src="{{ asset('actosweb/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
+    <script src="{{ asset('actosweb/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
+    <script src="{{ asset('actosweb/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
+    <script src="{{ asset('actosweb/variables.js') }}"></script>
+
+    <script>
+        $(function () {
+            $("#example1").DataTable({
+            "responsive": true, "lengthChange": false, "autoWidth": false, "language": spanish,
+            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+            $('#example2').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "searching": false,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+            });
+        });
+        
+        $("#detalle_presupuesto_nombre" ).val(""); 
+    </script>
+    {% endblock %}        
+{% endblock %}
