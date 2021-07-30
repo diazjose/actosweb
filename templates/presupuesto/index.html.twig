@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-{% block title %}Detalle de Presupuesto - {{ parent() }}{% endblock %}
+{% block title %}Presupuesto - {{ parent() }}{% endblock %}
 {% block stylesheets %}
     <!-- DataTables -->
   <link rel="stylesheet" href="{{ asset('actosweb/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
@@ -15,7 +15,7 @@
 
         <div class="row align-items-center mb-3 mb-xl-5">
           <div class="col-md mb-2 mb-md-0">
-            <h1 class="h3 mb-0"><b>Detalles de Presupuestos</b></h1>
+            <h1 class="h3 mb-0"><b>Presupuestos</b></h1>
           </div>
         </div>
 
@@ -25,52 +25,51 @@
             <div class="col-4">
                 <div class="card">
                     <div class="card-header">
-                    <h3 class="card-title"><i class="fas fa-plus"></i> &nbsp;<b>Agregar Detalle</b></h3>
+                    <h3 class="card-title"><i class="fas fa-plus"></i> &nbsp;<b>Agregar Presupuesto</b></h3>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                      {{ include('detalle_presupuesto/_form.html.twig') }}
+                      {{ include('presupuesto/_form.html.twig') }}
                     </div>
                 </div>
             </div> 
             <div class="col-8">
               <div class="card">
                 <div class="card-header">
-                  <h3 class="card-title"><i class="fas fa-list"></i> &nbsp;<b>Listado de Detalles</b></h3>
+                  <h3 class="card-title"><i class="fas fa-list"></i> &nbsp;<b>Listado de Presupuestos</b></h3>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
+                  <div class="card-body">
                   <table id="example1" class="table table-bordered table-hover">
                     <thead>
                       <tr>
-                          <th>Nombre</th>
-                          <th>Porcentaje (%)</th>
-                          <th>Valor ($)</th>
-                          <th></th>
+                          <th>Fecha</th>
+                          <th>Acto</th>
+                          <th>Detalles</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {% set i = 1 %}
-                      {% for t in detalles %}
+                      {% for p in presupuestos %}
                       <tr>
-                          <td>{{t.nombre}}</td>
-                          <td>{{t.porcentaje ? t.porcentaje : '0,0'}}</td>
-                          <td>{{t.valor ? t.valor|number_format(0, ',', '.' ) : '------'}}</td>
-                          <td width="80" class="text-right">
-                            <a class="m-0 p-1 btn btn-sm" title="Editar registro" href="javascript:void(0)" data-toggle="modal" data-target="#modalContent{{ t.id }}">
-                              <i class="fas fa-edit"></i>
-                            </a>
+                          <td onClick="window.location='{{ path('presupuesto_show', {'id': p.getId}) }}'">{{p.fecha|date('d/m/Y')}}</td>
+                          <td onClick="window.location='{{ path('presupuesto_show', {'id': p.getId}) }}'">{{p.acto.nombre}}</td>
+                          <td onClick="window.location='{{ path('presupuesto_show', {'id': p.getId}) }}'">
+                            {% set i = 1 %}
+                            {% for d in p.detalles %}
+                                {% if i != 1 %} - {% endif %}
+                                 {{d.detallePresupuesto.nombre}}
+                            {% set i = i + 1 %}
+                            {% endfor %}
                           </td>
                       </tr>
-                      {% set i = i + 1 %}
                       {% endfor %}
                     </tbody>
                     <tfoot>
                       <tr>
-                          <th>Nombre</th>
-                          <th>Porcentaje (%)</th>
-                          <th>Valor ($)</th>
-                          <th></th>
+                          <th>Fecha</th>
+                          <th>Acto</th>
+                          <th>Detalles</th>
                       </tr>
                     </tfoot>
                   </table>
@@ -80,29 +79,9 @@
             </div>             
           </div>
         </div>
-      </div>        
+      </section>        
 
-{% block modal_content %}
-  {% for t in detalles %}
-  <div id="modalContent{{ t.id }}" class="modal fade" tabindex="-1" role="dialog">
-    <div class="modal-dialog">      
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title"><i class="fas fa-edit"></i> <b>Actualizar Detalle</b></h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          {{ include('detalle_presupuesto/_edit_form.html.twig', {"tipo" : t }) }}
-        </div>
-      </div>
-    </div>
-  </div>
-  {% endfor %}
-{% endblock modal_content %}
-
-
+      
     {% block javascripts %}
     <!-- DataTables  & Plugins -->
     <script src="{{ asset('actosweb/plugins/datatables/jquery.dataTables.min.js') }}"></script>
@@ -134,8 +113,7 @@
             "responsive": true,
             });
         });
-        
-        $("#detalle_presupuesto_nombre" ).val(""); 
+         
     </script>
     {% endblock %}        
 {% endblock %}

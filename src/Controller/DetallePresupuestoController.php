@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\DetallePresupuesto;
 use App\Form\DetallePresupuestoType;
+use App\Repository\DetallePresupuestoRepository; 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -46,11 +47,21 @@ class DetallePresupuestoController extends AbstractController
     /**
      * @Route("/edit/{id}", name="detalle_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, DetallePresupuesto $detalle): Response
-    {
+    public function edit(Request $request, DetallePresupuesto $detalle, DetallePresupuestoRepository $detalleRepository): Response
+    {        
         if ($this->isCsrfTokenValid('edit'.$detalle->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
-            $detalle->setNombre($request->request->get('nombre'));
+            if($request->request->get('nombreViejo') != $request->request->get('nombre')){
+                $de = $detalleRepository->findNombre($request->request->get('nombre'));
+                if($de){
+                    $this->addFlash('danger', '¡'.$request->request->get('nombre').' ya existe en la base de datos!');
+                    return $this->redirectToRoute('detalle_index');        
+                }else{
+                    $detalle->setNombre($request->request->get('nombre'));
+                }
+            }
+            $detalle->setPorcentaje($request->request->get('porcentaje'));
+            $detalle->setValor($request->request->get('valor'));
             $entityManager->persist($detalle);
             $entityManager->flush();
 

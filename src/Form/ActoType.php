@@ -38,6 +38,10 @@ class ActoType extends AbstractType
                 'label' => 'N° Acta',
                 'required' => false,
             ])
+            ->add('valor', null, [
+                'label' => 'Presupuesto ($)',
+                'required' => false,
+            ])
             ->add('fechaInicio', Type\DateType::class, [
                 'label' => 'Fecha de Inicio',
                 'widget' => 'choice',

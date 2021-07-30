@@ -61,7 +61,16 @@
                                 <td width="20%" class="align-middle">{{ acto.numeroLibro }}</td>
                                 <th width="10%" class="text-right">N° Acta:</th>
                                 <td width="20%" class="align-middle">{{ acto.numeroActa }}</td>
-                            </tr>                           
+                            </tr>  
+                            <tr>
+                                <th width="10%" class="text-right">Presupuesto:</th>
+                                <td width="20%" class="align-middle">$ {{ acto.valor ? acto.valor|number_format(0, ',', '.' ) : 0 }}</td>
+                                <th width="10%" class="text-right">Saldo:</th>
+                                <td width="20%" class="align-middle">$ {{ acto.saldo ? acto.saldo|number_format(0, ',', '.' ) : 0 }}</td>
+                                <th width="10%" class="text-right">Abonado:</th>
+                                {% set abonado = acto.valor - acto.saldo %}
+                                <td width="20%" class="align-middle">$ {{ abonado|number_format(0, ',', '.' ) }}</td>
+                            </tr>                         
                             <!-- fin Datos del Acto -->
 
                             <!-- Inicio Datos de Requirento/a favor -->

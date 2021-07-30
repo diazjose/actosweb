@@ -32,6 +32,20 @@ class DetallePresupuesto
     protected $nombre;
 
     /**
+    * @var string
+    *
+    * @ORM\Column(name="porcentaje", type="string", nullable=true)
+    */
+    protected $porcentaje;
+
+    /**
+    * @var string
+    *
+    * @ORM\Column(name="valor", type="string", nullable=true)
+    */
+    protected $valor;
+
+    /**
      * @ORM\OneToMany(targetEntity=Presupuesto::class, mappedBy="detalle")
      */
     private $presupuestos;
@@ -100,6 +114,30 @@ class DetallePresupuesto
         return $this;
     }
 
+    public function getPorcentaje(): ?string
+    {
+        return $this->porcentaje;
+    }
+
+    public function setPorcentaje(?string $porcentaje): self
+    {
+        $this->porcentaje = $porcentaje;
+
+        return $this;
+    }
+
+    public function getValor(): ?string
+    {
+        return $this->valor;
+    }
+
+    public function setValor(?string $valor): self
+    {
+        $this->valor = $valor;
+
+        return $this;
+    }
+
     /**
      * @return Collection|Presupuesto[]
      */
@@ -129,4 +167,5 @@ class DetallePresupuesto
 
         return $this;
     }
+
 }

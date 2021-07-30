@@ -9,7 +9,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass=PresupuestoRepository::class)
+ * @ORM\Entity(repositoryClass="App\Repository\PresupuestoRepository")
  */
 class Presupuesto
 {
@@ -28,22 +28,19 @@ class Presupuesto
     protected $fecha;
 
     /**
-     * @ORM\ManyToOne(targetEntity=DetallePresupuesto::class, inversedBy="presupuestos")
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Detalle", mappedBy="presupuesto", cascade={"persist"})
      */
-    private $detalle;
+    private $detalles;
 
     /**
     * @var string
     *
-    * @ORM\Column(name="monto", type="string", nullable=false)
-    * @Assert\NotBlank(message="Por favor ingrese Monto.") 
+    * @ORM\Column(name="monto", type="string", nullable=true) 
     */
     protected $monto;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Acto::class, inversedBy="presupuestos")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity=TipoActo::class, inversedBy="presupuestos")
      */
     private $acto;
 
@@ -63,6 +60,11 @@ class Presupuesto
       * @Gedmo\Versioned
       */
     private $updatedAt;
+
+    public function __construct()
+    {
+        $this->detalles = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -127,14 +129,44 @@ class Presupuesto
         $this->updatedAt = $updatedAt;
 
         return $this;
+    }   
+
+    /**
+     * @return Collection|Detalle[]
+     */
+    public function getDetalles(): Collection
+    {
+        return $this->detalles;
     }
 
-    public function getActo(): ?Acto
+    public function addDetalle(Detalle $detalle): self
+    {
+        if (!$this->detalles->contains($detalle)) {
+            $this->detalles[] = $detalle;
+            $detalle->setPresupuesto($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDetalle(Detalle $detalle): self
+    {
+        if ($this->detalles->removeElement($detalle)) {
+            // set the owning side to null (unless already changed)
+            if ($detalle->getPresupuesto() === $this) {
+                $detalle->setPresupuesto(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getActo(): ?TipoActo
     {
         return $this->acto;
     }
 
-    public function setActo(?Acto $acto): self
+    public function setActo(?TipoActo $acto): self
     {
         $this->acto = $acto;
 

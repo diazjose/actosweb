@@ -1,0 +1,143 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Presupuesto - {{ parent() }}{% endblock %}
+
+{% block body %}
+    <br><br>
+    <section class="content mx-2">
+        <div class="container-fluid">
+            <div class="row align-items-center mb-3 mb-xl-5">
+                <div class="col-md mb-2 mb-md-0">
+                    <h1 class="h3 mb-0"><b>Presupuesto</b></h1>
+                </div>
+                <div class="col-md ml-md-auto text-md-right">
+
+                    <button class="btn btn-sm btn-outline-danger float-right" type="button" data-toggle="modal" data-target="#modalContent">
+                    <i class="fas fa-trash-alt"></i> &nbsp; <span>Eliminar</span>
+                    </button>
+
+                    </a>
+
+                    <a class="btn btn-sm btn-outline-secondary float-right" style="margin-right:15px;" href="{{ path('presupuesto_index') }}">
+                        <i class="fas fa-arrow-left"></i> &nbsp; Volver al listado
+                    </a>
+
+                </div>
+            </div>
+
+            {{ include('base/_flash.html.twig') }}
+
+            <div class="card">
+                <div class="card-body">
+
+                    <table class="table">
+
+                        <tbody>
+                            <!-- Inicio Datos del Acto -->
+                            <tr style="background: #80808012;">
+                                <th colspan="6" class="text-center align-middle">Datos del Presupuesto</th>
+                            </tr>
+                            <tr>
+                                <th width="15%" class="text-right">Tipo de Acto:</th>
+                                <td width="20%" class="align-middle">{{ presupuesto.acto.nombre }}</td>
+                                <th width="15%" class="text-right">Fecha de Crearción:</th>
+                                <td width="20%" class="align-middle">{{ presupuesto.fecha|date('d/m/Y') }}</td>
+                            </tr>             
+                            <!-- fin Datos del Acto -->
+
+                            <!-- Inicio  Formulario de Carga -->
+                            
+                              <tr style="background: #80808012;">
+                                  <th colspan="6" class="text-center align-middle">
+                                    Completar Datos de Impresión
+                                  </th>
+                              </tr>
+                              <tr>
+                                  <td colspan="6">
+                                    {{ include('presupuesto/_datos_form.html.twig', {"id" : presupuesto.id}) }}
+                                  </td>
+                              </tr>
+                              
+
+                            <!-- Fin Formulario de Carga -->  
+
+                            <!-- Inicio Datos de Detalles -->
+                            
+                              <tr style="background: #80808012;">
+                                  <th colspan="6" class="text-center align-middle">
+                                    Detalles
+                                  </th>
+                              </tr>
+                                <th colspan="6" class="align-middle">
+                                    <a class="btn btn-sm btn-outline-info float-left" type="button" data-toggle="modal" data-target="#Detalle" href="#">
+                                      <i class="fas fa-plus"></i> &nbsp; 
+                                        <span>Agregar detalle</span>
+                                    </a>
+                                </th>
+                                 <tr>
+                                    <th width="20%" class="text-right">Detalle</th>
+                                    <th class="text-right">Porcentaje (%)</th>
+                                    <th class="text-right">Valor</th>
+                                    <th></th>
+                                </tr>
+                                {% for d in presupuesto.detalles %}
+                                  <tr>
+                                      <td width="20%" class="text-right">{{d.detallePresupuesto.nombre}}</td>
+                                      <td class="text-right">% {{d.detallePresupuesto.porcentaje ? d.detallePresupuesto.porcentaje : 0}}</td>
+                                      <td class="text-right">
+                                        $ {{d.detallePresupuesto.valor ? d.detallePresupuesto.valor : 0}}
+                                      </td>
+                                      <td width="80" class="text-right">
+                                        <a class="m-0 p-1 btn btn-sm" title="Eliminar registro" style="color:red;" href="javascript:void(0)" data-toggle="modal" data-target="#delDetalle{{ d.id }}">
+                                          <i class="fas fa-trash-alt"></i>
+                                        </a>
+                                      </td>
+                                  </tr>
+                                {% endfor %}
+                            <!-- Fin Datos de Detalles -->
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+            </div>
+        </div><br>
+
+    </section>        
+    
+{% endblock %}
+
+{% block modal_content %}
+  <div id="modalContent" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        {{ include('presupuesto/_delete_form.html.twig', {"pre" : presupuesto.id}) }}
+      </div>
+    </div>
+  </div>
+  <div id="Detalle" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">      
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><b>Agregar Detalle</b></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          {{ include('presupuesto/_detalle_form.html.twig', {"id" : presupuesto.id}) }}
+        </div>
+      </div>
+    </div>
+  </div>
+  {% for d in presupuesto.detalles %}
+  <div id="delDetalle{{d.id}}" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        {{ include('presupuesto/_delete_detalle.html.twig', {"id" : d.id, 'nombre': d.detallePresupuesto.nombre}) }}
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+{% endblock modal_content %}

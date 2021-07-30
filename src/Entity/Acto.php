@@ -44,6 +44,13 @@ class Acto
     /**
     * @var string
     *
+    * @ORM\Column(name="valor", type="string", nullable=true) 
+    */
+    protected $valor;
+
+    /**
+    * @var string
+    *
     * @ORM\Column(name="saldo", type="string", nullable=true) 
     */
     protected $saldo;
@@ -149,6 +156,18 @@ class Acto
     public function setFechaFin(\DateTimeInterface $fechaFin): self
     {
         $this->fechaFin = $fechaFin;
+
+        return $this;
+    }
+
+    public function getValor(): ?string
+    {
+        return $this->valor;
+    }
+
+    public function setValor(string $valor): self
+    {
+        $this->valor = $valor;
 
         return $this;
     }

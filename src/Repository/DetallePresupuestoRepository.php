@@ -47,4 +47,13 @@ class DetallePresupuestoRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findNombre($value){
+        return $this->createQueryBuilder('d')
+            ->andWhere('d.nombre = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }

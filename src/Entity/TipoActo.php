@@ -36,6 +36,11 @@ class TipoActo
      */
     private $actos;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Presupuesto::class, mappedBy="acto")
+     */
+    private $presupuestos;
+
     /** 
      * @ORM\OneToOne(targetEntity="Hoja", inversedBy="tipoActo")
      * @ORM\JoinColumn(name="hoja_id", referencedColumnName="id", nullable=true)
@@ -62,6 +67,7 @@ class TipoActo
     public function __construct()
     {
         $this->actos = new ArrayCollection();
+        $this->presupuestos = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -143,6 +149,36 @@ class TipoActo
     public function setHoja(?Hoja $hoja): self
     {
         $this->hoja = $hoja;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Presupuesto[]
+     */
+    public function getPresupuestos(): Collection
+    {
+        return $this->presupuestos;
+    }
+
+    public function addPresupuesto(Presupuesto $presupuesto): self
+    {
+        if (!$this->presupuestos->contains($presupuesto)) {
+            $this->presupuestos[] = $presupuesto;
+            $presupuesto->setActo($this);
+        }
+
+        return $this;
+    }
+
+    public function removePresupuesto(Presupuesto $presupuesto): self
+    {
+        if ($this->presupuestos->removeElement($presupuesto)) {
+            // set the owning side to null (unless already changed)
+            if ($presupuesto->getActo() === $this) {
+                $presupuesto->setActo(null);
+            }
+        }
 
         return $this;
     }

@@ -15,6 +15,14 @@ class DetallePresupuestoType extends AbstractType
                 'label' => 'Nombre',
                 'required' => True,
             ])
+            ->add('porcentaje', null, [
+                'label' => 'Porcentaje (%)',
+                'required' => false,
+            ])
+            ->add('valor', null, [
+                'label' => 'Valor ($)',
+                'required' => false,
+            ])
         ;
     }
 

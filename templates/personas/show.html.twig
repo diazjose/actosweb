@@ -44,7 +44,7 @@
                         <th width="10%" class="text-right">Nombre:</th>
                         <td width="20%" class="align-middle">{{ persona.nombre ~ ", " ~ persona.apellidos }}</td>
                         <th width="10%" class="text-right">N° Dni:</th>
-                        <td width="20%" class="align-middle">{{ persona.dni }}</td>
+                        <td width="20%" class="align-middle">{{ persona.dni|number_format(0, ',', '.' ) }}</td>
                         <th width="10%" class="text-right">N° Cuil:</th>
                         <td width="20%" class="align-middle">{{ persona.cuil }}</td>
                     </tr>
@@ -76,7 +76,7 @@
                             <th width="10%" class="text-right">Nombre:</th>
                             <td width="20%" class="align-middle">{{ persona.parent.nombre ~ ", " ~ persona.parent.apellidos }}</td>
                             <th width="10%" class="text-right">N° Dni:</th>
-                            <td width="20%" class="align-middle">{{ persona.parent.dni }}</td>
+                            <td width="20%" class="align-middle">{{ persona.parent.dni|number_format(0, ',', '.' ) }}</td>
                             <th width="10%" class="text-right">N° Cuil:</th>
                             <td width="20%" class="align-middle">{{ persona.parent.cuil }}</td>
                         </tr>

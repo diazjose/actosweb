@@ -51,6 +51,7 @@ class ActosController extends AbstractController
             $hoja = $hojaRepository->findHoja($idHoja);            
             $cantidad = $hoja->getCantidad() - 1;
             $hoja->setCantidad($cantidad);
+            $acto->setSaldo($acto->getValor());
             /* Guardar consultar */
             $date = new \DateTime();
             $acto->setCreatedAt($date);
@@ -111,6 +112,12 @@ class ActosController extends AbstractController
                 $en->flush();
 
             }
+            $monto = 0;
+            foreach ($acto->getPagos() as $p){
+                $monto += $p->getMonto(); 
+            }
+            $valor = $acto->getValor() - $monto;
+            $acto->setSaldo($valor);
             $this->getDoctrine()->getManager()->flush();
 
             $this->addFlash('success', '¡Registro actualizado correctamente!');

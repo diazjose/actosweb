@@ -73,6 +73,11 @@ class CajaController extends AbstractController
             $caja->setTipoPago($tipoPago);
             $caja->setActo($acto);
             $caja->setMonto($request->request->get('monto'));
+            $valor = $acto->getSaldo() - $caja->getMonto();
+            $acto->setSaldo($valor);
+            $entityManager->persist($acto);
+            $entityManager->flush();
+             
             $con = count($acto->getPagos()) + 1;
             $caja->setDetalle('Pago de cuota N°'.$con);
 

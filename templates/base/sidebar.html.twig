@@ -76,6 +76,16 @@
           </li>
           <!-- Fin de Caja -->
 
+          <!-- Inicio de Presupuesto -->
+          {% set opciones = ["presupuesto_index", "acto_new","acto_edit","acto_show"] %}
+          <li class="nav-item">
+            <a href="{{ path('presupuesto_index') }}" class="nav-link {{ current_path in opciones ? "active" : ""  }}">
+              <i class="nav-icon fas fa-money-check-alt"></i>
+              <p>Presupuesto</p>
+            </a>            
+          </li>
+          <!-- Fin de Presupuesto -->
+
           <!-- Inicio de Configuracion -->
           <li class="nav-header">SISTEMA</li>
               
